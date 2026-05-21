@@ -112,17 +112,13 @@ def run_scan():
             for flight in flights:
                 dest_code = flight.get("destination", "")
 
-                # Sprawdź czy destynacja jest na naszej liście
-                if dest_code not in destination_codes:
-                    continue
-
                 price = flight.get("price", 0)
                 if not price or price <= 0:
                     continue
 
                 total_flights_checked += 1
 
-                # Pobierz informacje o lotniku docelowym
+                # Pobierz informacje o lotnisku docelowym (soft lookup)
                 airport_info = airports_dict.get(dest_code, {})
                 country = airport_info.get("country", "Unknown")
                 airport_name = airport_info.get("name", dest_code)
