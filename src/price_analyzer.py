@@ -401,10 +401,13 @@ class PriceAnalyzer:
 
         return sorted_deals[:limit]
 
-    def cleanup_old_entries(self) -> None:
+    def cleanup_old_entries(self) -> int:
         """Usuń stare wpisy z historii (starsze niż 90 dni).
 
         Czyści zarówno wpisy cenowe jak i stare okazje.
+        
+        Returns:
+            Liczba usuniętych wpisów cenowych.
         """
         cutoff = datetime.now() - timedelta(days=PRICE_HISTORY_MAX_AGE_DAYS)
         removed_prices = 0
@@ -440,6 +443,8 @@ class PriceAnalyzer:
             f"Wyczyszczono historię: usunięto {removed_prices} wpisów cenowych, "
             f"{len(empty_routes)} pustych tras i {removed_deals} starych okazji"
         )
+        
+        return removed_prices
 
         if removed_prices > 0 or empty_routes or removed_deals:
             self.save_history()
