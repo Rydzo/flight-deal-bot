@@ -29,7 +29,7 @@
 ```
 1. 🕐 Co 6 godzin GitHub Actions uruchamia skaner
 2. 🌍 Skaner sprawdza loty z polskich lotnisk (rotacja dzień po dniu)
-3. 📡 Amadeus API zwraca najtańsze loty do setek destynacji
+3. 📡 Kiwi.com API zwraca najtańsze loty do setek destynacji
 4. 📊 Algorytm porównuje ceny z historią i progami absolutnymi
 5. 🔥 Jeśli lot jest zbugowany → wysyłamy powiadomienie na Telegram
 6. 💾 Aktualizujemy historię cen w repozytorium
@@ -147,7 +147,7 @@
 │  flight_scanner.py ──→ api_client.py         │
 │         │                    │                │
 │         ▼                    ▼                │
-│  price_analyzer.py    Amadeus API            │
+│  price_analyzer.py    Kiwi.com API            │
 │         │                                    │
 │         ▼                                    │
 │  notifier.py ──────→ Telegram Bot API        │
@@ -175,7 +175,7 @@
 ├── 📁 src/
 │   ├── __init__.py
 │   ├── config.py               # Konfiguracja, lista lotnisk
-│   ├── api_client.py           # Klient Amadeus API
+│   ├── api_client.py           # Klient Kiwi.com API
 │   ├── price_analyzer.py       # Algorytm wykrywania bugów
 │   ├── notifier.py             # Powiadomienia Telegram
 │   ├── telegram_bot.py         # Obsługa komend
@@ -375,7 +375,7 @@ Tak! Zmień `BUG_THRESHOLD_PERCENT` w `src/config.py` (domyślnie 40%).
 
 ## 📄 Licencja
 
-MIT License — używaj jak chcesz! Pamiętaj tylko o limitach API Amadeus.
+MIT License — używaj jak chcesz! Pamiętaj tylko o limitach API Kiwi.com(Rapid API).
 
 ---
 
@@ -390,5 +390,5 @@ MIT License — używaj jak chcesz! Pamiętaj tylko o limitach API Amadeus.
 ---
 
 <p align="center">
-  Made with ❤️ and ✈️ | Powered by Amadeus API & Telegram
+  Made with ❤️ and ✈️ | Powered by Kiwi.com API & Telegram
 </p>
