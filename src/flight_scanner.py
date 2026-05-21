@@ -81,9 +81,14 @@ def run_scan():
     airports_dict = {a["code"]: a for a in all_airports}
     destination_codes = {a["code"] for a in get_destination_airports()}
 
-    # --- Wybierz dzisiejsze lotniska wylotowe (rotacja) ---
-    today_origins = [get_today_origin()]
-    logger.info(f"📍 Dzisiejsze lotniska wylotowe: {', '.join(today_origins)}")
+    # --- Wybierz dzisiejsze lotniska wylotowe (rotacja lub wszystkie) ---
+    force_all = os.environ.get("FORCE_ALL_AIRPORTS", "false").lower() == "true"
+    if force_all:
+        today_origins = list(POLISH_AIRPORTS)
+        logger.info(f"📍 Tryb FORCE_ALL — skanowanie ze WSZYSTKICH lotnisk: {', '.join(today_origins)}")
+    else:
+        today_origins = [get_today_origin()]
+        logger.info(f"📍 Dzisiejsze lotnisko wylotowe (rotacja): {', '.join(today_origins)}")
 
     # --- Liczniki ---
     total_flights_checked = 0
