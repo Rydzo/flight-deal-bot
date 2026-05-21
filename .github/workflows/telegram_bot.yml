@@ -1,0 +1,50 @@
+name: "🤖 Telegram Bot"
+
+on:
+  schedule:
+    # Sprawdzaj nowe wiadomości co 5 minut
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+    # Pozwól na ręczne uruchomienie
+
+jobs:
+  telegram-poll:
+    name: 📨 Sprawdzanie wiadomości Telegram
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Potrzebne do zapisu last_update_id
+
+    steps:
+      - name: 📥 Checkout repozytorium
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Instalacja zależności
+        run: pip install -r requirements.txt
+
+      - name: 🤖 Uruchomienie bota Telegram
+        run: python -m src.telegram_bot
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+      - name: 💾 Commit last_update_id
+        run: |
+          git config user.name "Flight Deal Bot 🤖"
+          git config user.email "bot@github-actions.com"
+          git add data/last_update_id.txt
+          
+          if git diff --staged --quiet; then
+            echo "📭 Brak nowych wiadomości."
+          else
+            git commit -m "🤖 Aktualizacja last_update_id [skip ci]"
+            git push
+          fi

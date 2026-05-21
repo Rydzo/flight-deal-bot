@@ -1,0 +1,943 @@
+1. [ATL] Hartsfield-Jackson Atlanta International Airport - USA
+2. [PEK] Beijing Capital International Airport - China
+3. [LAX] Los Angeles International Airport - USA
+4. [DXB] Dubai International Airport - UAE
+5. [HND] Tokyo Haneda Airport - Japan
+6. [ORD] O'Hare International Airport - USA
+7. [LHR] London Heathrow Airport - UK
+8. [PVG] Shanghai Pudong International Airport - China
+9. [CDG] Charles de Gaulle Airport - France
+10. [DFW] Dallas/Fort Worth International Airport - USA
+11. [AMS] Amsterdam Airport Schiphol - Netherlands
+12. [FRA] Frankfurt am Main Airport - Germany
+13. [CAN] Guangzhou Baiyun International Airport - China
+14. [IST] Istanbul Airport - Turkey
+15. [SIN] Singapore Changi Airport - Singapore
+16. [ICN] Incheon International Airport - South Korea
+17. [DEN] Denver International Airport - USA
+18. [BKK] Suvarnabhumi Airport - Thailand
+19. [JFK] John F. Kennedy International Airport - USA
+20. [KUL] Kuala Lumpur International Airport - Malaysia
+21. [SFO] San Francisco International Airport - USA
+22. [DEL] Indira Gandhi International Airport - India
+23. [MAD] Adolfo Suárez Madrid–Barajas Airport - Spain
+24. [CTU] Chengdu Shuangliu International Airport - China
+25. [SZX] Shenzhen Bao'an International Airport - China
+26. [MCO] Orlando International Airport - USA
+27. [LAS] Harry Reid International Airport - USA
+28. [CLT] Charlotte Douglas International Airport - USA
+29. [MIA] Miami International Airport - USA
+30. [PHX] Phoenix Sky Harbor International Airport - USA
+31. [IAH] George Bush Intercontinental Airport - USA
+32. [SEA] Seattle-Tacoma International Airport - USA
+33. [BOM] Chhatrapati Shivaji Maharaj International Airport - India
+34. [EWR] Newark Liberty International Airport - USA
+35. [MSP] Minneapolis-Saint Paul International Airport - USA
+36. [DTW] Detroit Metropolitan Airport - USA
+37. [BOS] Boston Logan International Airport - USA
+38. [SLC] Salt Lake City International Airport - USA
+39. [PHL] Philadelphia International Airport - USA
+40. [BWI] Baltimore/Washington International Airport - USA
+41. [FLL] Fort Lauderdale-Hollywood International Airport - USA
+42. [LGW] London Gatwick Airport - UK
+43. [BCN] Josep Tarradellas Barcelona-El Prat Airport - Spain
+44. [FCO] Leonardo da Vinci–Fiumicino Airport - Italy
+45. [MUC] Munich Airport - Germany
+46. [SYD] Sydney Kingsford Smith Airport - Australia
+47. [MEL] Melbourne Airport - Australia
+48. [YYZ] Toronto Pearson International Airport - Canada
+49. [YVR] Vancouver International Airport - Canada
+50. [MEX] Mexico City International Airport - Mexico
+51. [GRU] São Paulo/Guarulhos International Airport - Brazil
+52. [BOG] El Dorado International Airport - Colombia
+53. [CUN] Cancún International Airport - Mexico
+54. [CPH] Copenhagen Airport - Denmark
+55. [ZRH] Zurich Airport - Switzerland
+56. [VIE] Vienna International Airport - Austria
+57. [ARN] Stockholm Arlanda Airport - Sweden
+58. [OSL] Oslo Airport, Gardermoen - Norway
+59. [HEL] Helsinki Airport - Finland
+60. [WAW] Warsaw Chopin Airport - Poland
+61. [KRK] John Paul II International Airport Kraków-Balice - Poland
+62. [GDN] Gdańsk Lech Wałęsa Airport - Poland
+63. [KTW] Katowice Airport - Poland
+64. [WRO] Wrocław Copernicus Airport - Poland
+65. [POZ] Poznań-Ławica Airport - Poland
+66. [RZE] Rzeszów-Jasionka Airport - Poland
+67. [SZZ] Solidarity Szczecin–Goleniów Airport - Poland
+68. [LUZ] Lublin Airport - Poland
+69. [BYG] Bydgoszcz Ignacy Jan Paderewski Airport - Poland
+70. [LCJ] Łódź Władysław Reymont Airport - Poland
+71. [SOU] Southampton Airport - UK
+72. [BRS] Bristol Airport - UK
+73. [BHX] Birmingham Airport - UK
+74. [MAN] Manchester Airport - UK
+75. [EDI] Edinburgh Airport - UK
+76. [GLA] Glasgow Airport - UK
+77. [STN] London Stansted Airport - UK
+78. [LTN] London Luton Airport - UK
+79. [DUB] Dublin Airport - Ireland
+80. [ORK] Cork Airport - Ireland
+81. [SNN] Shannon Airport - Ireland
+82. [BRU] Brussels Airport - Belgium
+83. [CRL] Brussels South Charleroi Airport - Belgium
+84. [GVA] Geneva Airport - Switzerland
+85. [BSL] EuroAirport Basel Mulhouse Freiburg - Switzerland/France/Germany
+86. [LIN] Milan Linate Airport - Italy
+87. [MXP] Milan Malpensa Airport - Italy
+88. [BGY] Orio al Serio International Airport - Italy
+89. [VCE] Venice Marco Polo Airport - Italy
+90. [BLQ] Bologna Guglielmo Marconi Airport - Italy
+91. [NAP] Naples International Airport - Italy
+92. [CTA] Catania-Fontanarossa Airport - Italy
+93. [PMO] Palermo Falcone Borsellino Airport - Italy
+94. [PSA] Pisa International Airport - Italy
+95. [CAG] Cagliari Elmas Airport - Italy
+96. [BRI] Bari Karol Wojtyła Airport - Italy
+97. [TSF] Treviso Airport - Italy
+98. [VRN] Verona Villafranca Airport - Italy
+99. [NCE] Nice Côte d'Azur Airport - France
+100. [LYS] Lyon-Saint Exupéry Airport - France
+101. [MRS] Marseille Provence Airport - France
+102. [TLS] Toulouse–Blagnac Airport - France
+103. [BOD] Bordeaux–Mérignac Airport - France
+104. [NTE] Nantes Atlantique Airport - France
+105. [SXB] Strasbourg Airport - France
+106. [LIL] Lille Airport - France
+107. [MPL] Montpellier–Méditerranée Airport - France
+108. [ORY] Paris Orly Airport - France
+109. [HAM] Hamburg Airport - Germany
+110. [DUS] Düsseldorf Airport - Germany
+111. [TXL] Berlin Tegel Airport (Historical) - Germany
+112. [SXF] Berlin Schönefeld Airport (Historical) - Germany
+113. [BER] Berlin Brandenburg Airport - Germany
+114. [CGN] Cologne Bonn Airport - Germany
+115. [STR] Stuttgart Airport - Germany
+116. [HAJ] Hannover Airport - Germany
+117. [NUE] Nuremberg Airport - Germany
+118. [BRE] Bremen Airport - Germany
+119. [LEJ] Leipzig/Halle Airport - Germany
+120. [AGP] Málaga Airport - Spain
+121. [ALC] Alicante–Elche Miguel Hernández Airport - Spain
+122. [PMI] Palma de Mallorca Airport - Spain
+123. [TFN] Tenerife North–Ciudad de La Laguna Airport - Spain
+124. [TFS] Tenerife South Airport - Spain
+125. [LPA] Gran Canaria Airport - Spain
+126. [ACE] Lanzarote Airport - Spain
+127. [FUE] Fuerteventura Airport - Spain
+128. [IBZ] Ibiza Airport - Spain
+129. [MAH] Menorca Airport - Spain
+130. [SVQ] Seville Airport - Spain
+131. [VLC] Valencia Airport - Spain
+132. [BIO] Bilbao Airport - Spain
+133. [SCQ] Santiago–Rosalía de Castro Airport - Spain
+134. [LIS] Lisbon Humberto Delgado Airport - Portugal
+135. [OPO] Francisco Sá Carneiro Airport - Portugal
+136. [FAO] Faro Airport - Portugal
+137. [FNC] Cristiano Ronaldo International Airport - Portugal
+138. [PDL] João Paulo II Airport - Portugal
+139. [ATH] Athens International Airport - Greece
+140. [SKG] Thessaloniki Airport - Greece
+141. [HER] Heraklion International Airport - Greece
+142. [RHO] Rhodes International Airport - Greece
+143. [CHQ] Chania International Airport - Greece
+144. [CFU] Corfu International Airport - Greece
+145. [KGS] Kos International Airport - Greece
+146. [JMK] Mykonos International Airport - Greece
+147. [JTR] Santorini International Airport - Greece
+148. [PRG] Václav Havel Airport Prague - Czech Republic
+149. [BRQ] Brno–Tuřany Airport - Czech Republic
+150. [OSR] Ostrava Leoš Janáček Airport - Czech Republic
+151. [BUD] Budapest Ferenc Liszt International Airport - Hungary
+152. [DEB] Debrecen International Airport - Hungary
+153. [BTS] M. R. Štefánik Airport - Slovakia
+154. [KSC] Košice International Airport - Slovakia
+155. [LJU] Ljubljana Jože Pučnik Airport - Slovenia
+156. [ZAG] Zagreb Airport - Croatia
+157. [SPU] Split Airport - Croatia
+158. [DBV] Dubrovnik Airport - Croatia
+159. [ZAD] Zadar Airport - Croatia
+160. [PUY] Pula Airport - Croatia
+161. [SJJ] Sarajevo International Airport - Bosnia and Herzegovina
+162. [BEG] Belgrade Nikola Tesla Airport - Serbia
+163. [INI] Niš Constantine the Great Airport - Serbia
+164. [TIA] Tirana International Airport Nënë Tereza - Albania
+165. [SKP] Skopje International Airport - North Macedonia
+166. [OHD] Ohrid St. Paul the Apostle Airport - North Macedonia
+167. [SOF] Sofia Airport - Bulgaria
+168. [BOJ] Burgas Airport - Bulgaria
+169. [VAR] Varna Airport - Bulgaria
+170. [OTP] Henri Coandă International Airport - Romania
+171. [CLJ] Cluj Avram Iancu International Airport - Romania
+172. [TSR] Timișoara Traian Vuia International Airport - Romania
+173. [IAS] Iași International Airport - Romania
+174. [SBZ] Sibiu International Airport - Romania
+175. [KIV] Chișinău International Airport - Moldova
+176. [IEV] Kyiv Zhulyany International Airport - Ukraine
+177. [KBP] Boryspil International Airport - Ukraine
+178. [LWO] Lviv Danylo Halytskyi International Airport - Ukraine
+179. [ODS] Odesa International Airport - Ukraine
+180. [HRK] Kharkiv International Airport - Ukraine
+181. [MSQ] Minsk National Airport - Belarus
+182. [SVO] Sheremetyevo International Airport - Russia
+183. [DME] Domodedovo International Airport - Russia
+184. [VKO] Vnukovo International Airport - Russia
+185. [LED] Pulkovo Airport - Russia
+186. [OVB] Tolmachevo Airport - Russia
+187. [SVX] Koltsovo International Airport - Russia
+188. [KJA] Krasnoyarsk International Airport - Russia
+189. [KUV] Samara Kurumoch Airport - Russia
+190. [KZN] Kazan International Airport - Russia
+191. [AER] Sochi International Airport - Russia
+192. [ROV] Platov International Airport - Russia
+193. [VOG] Volgograd International Airport - Russia
+194. [MMK] Murmansk Airport - Russia
+195. [IJK] Izhevsk Airport - Russia
+196. [GOJ] Strigino International Airport - Russia
+197. [PEE] Perm International Airport - Russia
+198. [UFA] Ufa International Airport - Russia
+199. [CEK] Chelyabinsk Airport - Russia
+200. [OMS] Omsk Tsentralny Airport - Russia
+201. [KEJ] Kemerovo International Airport - Russia
+202. [UNNT] Novosibirsk Elitovka - Russia
+203. [SGC] Surgut International Airport - Russia
+204. [HMA] Khanty-Mansiysk Airport - Russia
+205. [NUX] Novy Urengoy Airport - Russia
+206. [VVO] Vladivostok International Airport - Russia
+207. [KHV] Khabarovsk Novy Airport - Russia
+208. [YKS] Yakutsk Airport - Russia
+209. [IKT] Irkutsk International Airport - Russia
+210. [UUD] Ulan-Ude Airport - Russia
+211. [PKC] Yelizovo Airport - Russia
+212. [SAW] Sabiha Gökçen International Airport - Turkey
+213. [AYT] Antalya Airport - Turkey
+214. [ESB] Esenboğa International Airport - Turkey
+215. [ADB] Adnan Menderes Airport - Turkey
+216. [DLM] Dalaman Airport - Turkey
+217. [BJV] Milas–Bodrum Airport - Turkey
+218. [ADA] Adana Şakirpaşa Airport - Turkey
+219. [TZX] Trabzon Airport - Turkey
+220. [ERZ] Erzurum Airport - Turkey
+221. [GZT] Gaziantep Oguzeli Airport - Turkey
+222. [LCA] Larnaca International Airport - Cyprus
+223. [PFO] Paphos International Airport - Cyprus
+224. [ECN] Ercan International Airport - Cyprus
+225. [TLV] Ben Gurion Airport - Israel
+226. [VDA] Ovda Airport - Israel
+227. [ETM] Ramon Airport - Israel
+228. [AMM] Queen Alia International Airport - Jordan
+229. [AQJ] King Hussein International Airport - Jordan
+230. [BEY] Beirut–Rafic Hariri International Airport - Lebanon
+231. [DAM] Damascus International Airport - Syria
+232. [ALP] Aleppo International Airport - Syria
+233. [BGW] Baghdad International Airport - Iraq
+234. [EBL] Erbil International Airport - Iraq
+235. [BSR] Basra International Airport - Iraq
+236. [ISU] Sulaimaniyah International Airport - Iraq
+237. [NJF] Al Najaf International Airport - Iraq
+238. [KWI] Kuwait International Airport - Kuwait
+239. [BAH] Bahrain International Airport - Bahrain
+240. [DOH] Hamad International Airport - Qatar
+241. [AUH] Zayed International Airport - UAE
+242. [SHJ] Sharjah International Airport - UAE
+243. [RKT] Ras Al Khaimah International Airport - UAE
+244. [AAN] Al Ain International Airport - UAE
+245. [DWC] Al Maktoum International Airport - UAE
+246. [RUH] King Khalid International Airport - Saudi Arabia
+247. [JED] King Abdulaziz International Airport - Saudi Arabia
+248. [DMM] King Fahd International Airport - Saudi Arabia
+249. [MED] Prince Mohammad bin Abdulaziz Airport - Saudi Arabia
+250. [AHB] Abha International Airport - Saudi Arabia
+251. [GJI] Jizan Regional Airport - Saudi Arabia
+252. [TIF] Taif Regional Airport - Saudi Arabia
+253. [ELQ] Gassim Regional Airport - Saudi Arabia
+254. [HAS] Ha'il Regional Airport - Saudi Arabia
+255. [HOF] Al-Ahsa International Airport - Saudi Arabia
+256. [MCT] Muscat International Airport - Oman
+257. [SLL] Salalah Airport - Oman
+258. [SAH] Sana'a International Airport - Yemen
+259. [ADE] Aden International Airport - Yemen
+260. [THR] Mehrabad International Airport - Iran
+261. [IKA] Tehran Imam Khomeini International Airport - Iran
+262. [MHD] Mashhad International Airport - Iran
+263. [SYZ] Shiraz International Airport - Iran
+264. [IFN] Isfahan International Airport - Iran
+265. [TBZ] Tabriz International Airport - Iran
+266. [AWZ] Ahvaz International Airport - Iran
+267. [BND] Bandar Abbas International Airport - Iran
+268. [KIH] Kish International Airport - Iran
+269. [KHI] Jinnah International Airport - Pakistan
+270. [LHE] Allama Iqbal International Airport - Pakistan
+271. [ISB] Islamabad International Airport - Pakistan
+272. [PEW] Bacha Khan International Airport - Pakistan
+273. [MUX] Multan International Airport - Pakistan
+274. [LYP] Faisalabad International Airport - Pakistan
+275. [SKT] Sialkot International Airport - Pakistan
+276. [KBL] Kabul International Airport - Afghanistan
+277. [HEA] Herat International Airport - Afghanistan
+278. [MZR] Mazar-i-Sharif International Airport - Afghanistan
+279. [KDH] Kandahar International Airport - Afghanistan
+280. [CCU] Netaji Subhash Chandra Bose International Airport - India
+281. [MAA] Chennai International Airport - India
+282. [BLR] Kempegowda International Airport - India
+283. [HYD] Rajiv Gandhi International Airport - India
+284. [COK] Cochin International Airport - India
+285. [AMD] Sardar Vallabhbhai Patel International Airport - India
+286. [PNQ] Pune Airport - India
+287. [GOI] Dabolim Airport - India
+288. [GOX] Manohar International Airport - India
+289. [CCJ] Calicut International Airport - India
+290. [TRV] Trivandrum International Airport - India
+291. [ATQ] Sri Guru Ram Dass Jee International Airport - India
+292. [GAU] Lokpriya Gopinath Bordoloi International Airport - India
+293. [JAI] Jaipur International Airport - India
+294. [LKO] Chaudhary Charan Singh International Airport - India
+295. [VNS] Lal Bahadur Shastri International Airport - India
+296. [IXC] Chandigarh Airport - India
+297. [NAG] Dr. Babasaheb Ambedkar International Airport - India
+298. [IXJ] Jammu Airport - India
+299. [SXR] Sheikh ul-Alam International Airport - India
+300. [CMB] Bandaranaike International Airport - Sri Lanka
+301. [HRI] Mattala Rajapaksa International Airport - Sri Lanka
+302. [DAC] Hazrat Shahjalal International Airport - Bangladesh
+303. [CGP] Shah Amanat International Airport - Bangladesh
+304. [ZYL] Osmani International Airport - Bangladesh
+305. [KTM] Tribhuvan International Airport - Nepal
+306. [PKR] Pokhara International Airport - Nepal
+307. [PBH] Paro Airport - Bhutan
+308. [RGN] Yangon International Airport - Myanmar
+309. [MDL] Mandalay International Airport - Myanmar
+310. [NYT] Naypyidaw International Airport - Myanmar
+311. [CNX] Chiang Mai International Airport - Thailand
+312. [HKT] Phuket International Airport - Thailand
+313. [USM] Samui Airport - Thailand
+314. [UTP] U-Tapao International Airport - Thailand
+315. [HDY] Hat Yai International Airport - Thailand
+316. [KBV] Krabi International Airport - Thailand
+317. [URT] Surat Thani Airport - Thailand
+318. [KKC] Khon Kaen Airport - Thailand
+319. [UBP] Ubon Ratchathani Airport - Thailand
+320. [HAN] Noi Bai International Airport - Vietnam
+321. [SGN] Tan Son Nhat International Airport - Vietnam
+322. [DAD] Da Nang International Airport - Vietnam
+323. [CXR] Cam Ranh International Airport - Vietnam
+324. [PQC] Phu Quoc International Airport - Vietnam
+325. [HPH] Cat Bi International Airport - Vietnam
+326. [VII] Vinh International Airport - Vietnam
+327. [HUI] Phu Bai International Airport - Vietnam
+328. [VCA] Can Tho International Airport - Vietnam
+329. [PNH] Phnom Penh International Airport - Cambodia
+330. [REP] Siem Reap International Airport - Cambodia
+331. [SAI] Siem Reap Angkor International Airport - Cambodia
+332. [KOS] Sihanouk International Airport - Cambodia
+333. [VTE] Wattay International Airport - Laos
+334. [LPQ] Luang Prabang International Airport - Laos
+335. [PKZ] Pakse International Airport - Laos
+336. [PEN] Penang International Airport - Malaysia
+337. [BKI] Kota Kinabalu International Airport - Malaysia
+338. [KCH] Kuching International Airport - Malaysia
+339. [LGK] Langkawi International Airport - Malaysia
+340. [JHB] Senai International Airport - Malaysia
+341. [MKZ] Malacca International Airport - Malaysia
+342. [KBR] Sultan Ismail Petra Airport - Malaysia
+343. [TGG] Sultan Mahmud Airport - Malaysia
+344. [CGK] Soekarno-Hatta International Airport - Indonesia
+345. [DPS] Ngurah Rai International Airport - Indonesia
+346. [SUB] Juanda International Airport - Indonesia
+347. [KNO] Kualanamu International Airport - Indonesia
+348. [UPG] Sultan Hasanuddin International Airport - Indonesia
+349. [BPN] Sultan Aji Muhammad Sulaiman Sepinggan Airport - Indonesia
+350. [YIA] Yogyakarta International Airport - Indonesia
+351. [JOG] Adisutjipto Airport - Indonesia
+352. [SOC] Adisumarmo International Airport - Indonesia
+353. [SRG] Ahmad Yani International Airport - Indonesia
+354. [BDO] Husein Sastranegara Airport - Indonesia
+355. [PLM] Sultan Mahmud Badaruddin II Airport - Indonesia
+356. [MES] Polonia International Airport (Historical) - Indonesia
+357. [PKU] Sultan Syarif Kasim II International Airport - Indonesia
+358. [PDG] Minangkabau International Airport - Indonesia
+359. [MDC] Sam Ratulangi International Airport - Indonesia
+360. [LOP] Lombok International Airport - Indonesia
+361. [MNL] Ninoy Aquino International Airport - Philippines
+362. [CEB] Mactan–Cebu International Airport - Philippines
+363. [CRK] Clark International Airport - Philippines
+364. [DVO] Francisco Bangoy International Airport - Philippines
+365. [ILO] Iloilo International Airport - Philippines
+366. [BCD] Bacolod–Silay Airport - Philippines
+367. [PPS] Puerto Princesa International Airport - Philippines
+368. [KLO] Kalibo International Airport - Philippines
+369. [MPH] Godofredo P. Ramos Airport - Philippines
+370. [ZAM] Zamboanga International Airport - Philippines
+371. [GES] General Santos International Airport - Philippines
+372. [HKG] Hong Kong International Airport - Hong Kong
+373. [MFM] Macau International Airport - Macau
+374. [TPE] Taiwan Taoyuan International Airport - Taiwan
+375. [TSA] Taipei Songshan Airport - Taiwan
+376. [KHH] Kaohsiung International Airport - Taiwan
+377. [TXG] Taichung International Airport - Taiwan
+378. [TNN] Tainan Airport - Taiwan
+379. [NRT] Narita International Airport - Japan
+380. [KIX] Kansai International Airport - Japan
+381. [ITM] Itami Airport - Japan
+382. [NGO] Chubu Centrair International Airport - Japan
+383. [CTS] New Chitose Airport - Japan
+384. [FUK] Fukuoka Airport - Japan
+385. [OKA] Naha Airport - Japan
+386. [KOJ] Kagoshima Airport - Japan
+387. [KMJ] Kumamoto Airport - Japan
+388. [MYJ] Matsuyama Airport - Japan
+389. [HIJ] Hiroshima Airport - Japan
+390. [SDJ] Sendai Airport - Japan
+391. [KMQ] Komatsu Airport - Japan
+392. [FSZ] Shizuoka Airport - Japan
+393. [KIJ] Niigata Airport - Japan
+394. [TOY] Toyama Airport - Japan
+395. [TAK] Takamatsu Airport - Japan
+396. [KCZ] Kochi Airport - Japan
+397. [UKB] Kobe Airport - Japan
+398. [GMP] Gimpo International Airport - South Korea
+399. [PUS] Gimhae International Airport - South Korea
+400. [CJU] Jeju International Airport - South Korea
+401. [TAE] Daegu International Airport - South Korea
+402. [KWJ] Gwangju Airport - South Korea
+403. [CJJ] Cheongju International Airport - South Korea
+404. [MWX] Muan International Airport - South Korea
+405. [YNY] Yangyang International Airport - South Korea
+406. [SHA] Shanghai Hongqiao International Airport - China
+407. [CKG] Chongqing Jiangbei International Airport - China
+408. [KMG] Kunming Changshui International Airport - China
+409. [XIY] Xi'an Xianyang International Airport - China
+410. [WUH] Wuhan Tianhe International Airport - China
+411. [HGH] Hangzhou Xiaoshan International Airport - China
+412. [NKG] Nanjing Lukou International Airport - China
+413. [CGO] Zhengzhou Xinzheng International Airport - China
+414. [CSX] Changsha Huanghua International Airport - China
+415. [TAO] Qingdao Jiaodong International Airport - China
+416. [TSN] Tianjin Binhai International Airport - China
+417. [DLC] Dalian Zhoushuizi International Airport - China
+418. [XMN] Xiamen Gaoqi International Airport - China
+419. [SYX] Sanya Phoenix International Airport - China
+420. [HAK] Haikou Meilan International Airport - China
+421. [URC] Ürümqi Diwopu International Airport - China
+422. [HRB] Harbin Taiping International Airport - China
+423. [SHE] Shenyang Taoxian International Airport - China
+424. [TNA] Jinan Yaoqiang International Airport - China
+425. [FOC] Fuzhou Changle International Airport - China
+426. [NNG] Nanning Wuxu International Airport - China
+427. [TYN] Taiyuan Wusu International Airport - China
+428. [KHN] Nanchang Changbei International Airport - China
+429. [SJW] Shijiazhuang Zhengding International Airport - China
+430. [WNZ] Wenzhou Longwan International Airport - China
+431. [NGB] Ningbo Lishe International Airport - China
+432. [HEF] Hefei Xinqiao International Airport - China
+433. [LHW] Lanzhou Zhongchuan International Airport - China
+434. [INC] Yinchuan Hedong International Airport - China
+435. [XNN] Xining Caojiabu Airport - China
+436. [KWE] Guiyang Longdongbao International Airport - China
+437. [HET] Hohhot Baita International Airport - China
+438. [Lhasa] Lhasa Gonggar Airport - China
+439. [ZUH] Zhuhai Jinwan Airport - China
+440. [JJN] Quanzhou Jinjiang International Airport - China
+441. [YNT] Yantai Penglai International Airport - China
+442. [WUX] Sunan Shuofang International Airport - China
+443. [JNG] Jining Qufu Airport - China
+444. [DYG] Zhangjiajie Hehua International Airport - China
+445. [XUZ] Xuzhou Guanyin Airport - China
+446. [LYG] Lianyungang Huaguoshan Airport - China
+447. [HFE] Hefei Luogang Airport (Historical) - China
+448. [ULN] Chinggis Khaan International Airport - Mongolia
+449. [UBN] New Ulaanbaatar International Airport - Mongolia
+450. [ALA] Almaty International Airport - Kazakhstan
+451. [NQZ] Nursultan Nazarbayev International Airport - Kazakhstan
+452. [CIT] Shymkent International Airport - Kazakhstan
+453. [GUW] Atyrau Airport - Kazakhstan
+454. [AKX] Aktobe Airport - Kazakhstan
+455. [SCO] Aktau Airport - Kazakhstan
+456. [TAS] Islam Karimov Tashkent International Airport - Uzbekistan
+457. [SKD] Samarkand International Airport - Uzbekistan
+458. [BHK] Bukhara International Airport - Uzbekistan
+459. [FEG] Fergana International Airport - Uzbekistan
+460. [ASB] Ashgabat International Airport - Turkmenistan
+461. [CRZ] Turkmenabat International Airport - Turkmenistan
+462. [FRU] Manas International Airport - Kyrgyzstan
+463. [OSS] Osh Airport - Kyrgyzstan
+464. [DYU] Dushanbe International Airport - Tajikistan
+465. [LBD] Khujand Airport - Tajikistan
+466. [CAI] Cairo International Airport - Egypt
+467. [HRG] Hurghada International Airport - Egypt
+468. [SSH] Sharm El Sheikh International Airport - Egypt
+469. [LUX] Luxor International Airport - Egypt
+470. [ASW] Aswan International Airport - Egypt
+471. [HBE] Borg El Arab Airport - Egypt
+472. [CMN] Mohammed V International Airport - Morocco
+473. [RAK] Marrakesh Menara Airport - Morocco
+474. [AGA] Agadir–Al Massira Airport - Morocco
+475. [FEZ] Fes–Saïss Airport - Morocco
+476. [TNG] Tangier Ibn Battouta Airport - Morocco
+477. [NDR] Nador International Airport - Morocco
+478. [OZZ] Ouarzazate Airport - Morocco
+479. [TUN] Tunis–Carthage International Airport - Tunisia
+480. [NBE] Enfidha–Hammamet International Airport - Tunisia
+481. [DJE] Djerba–Zarzis International Airport - Tunisia
+482. [MIR] Monastir Habib Bourguiba Airport - Tunisia
+483. [ALG] Houari Boumediene Airport - Algeria
+484. [ORN] Ahmed Ben Bella Airport - Algeria
+485. [CZL] Mohamed Boudiaf International Airport - Algeria
+486. [HME] Oued Irara–Krim Belkacem Airport - Algeria
+487. [TIP] Tripoli International Airport - Libya
+488. [MJI] Mitiga International Airport - Libya
+489. [BEN] Benina International Airport - Libya
+490. [KRT] Khartoum International Airport - Sudan
+491. [LOS] Murtala Muhammed International Airport - Nigeria
+492. [ABV] Nnamdi Azikiwe International Airport - Nigeria
+493. [KAN] Mallam Aminu Kano International Airport - Nigeria
+494. [PHC] Port Harcourt International Airport - Nigeria
+495. [ENU] Akanu Ibiam International Airport - Nigeria
+496. [ACC] Kotoka International Airport - Ghana
+497. [KMS] Kumasi Airport - Ghana
+498. [ABJ] Félix-Houphouët-Boigny International Airport - Ivory Coast
+499. [DKR] Léopold Sédar Senghor International Airport - Senegal
+500. [DSS] Blaise Diagne International Airport - Senegal
+501. [BLA] General José Antonio Anzoátegui International Airport - Venezuela
+502. [FNA] Lungi International Airport - Sierra Leone
+503. [ROB] Roberts International Airport - Liberia
+504. [BKO] Modibo Keita International Airport - Mali
+505. [OUA] Ouagadougou Airport - Burkina Faso
+506. [NIM] Diori Hamani International Airport - Niger
+507. [COO] Cadjehoun Airport - Benin
+508. [LFW] Lomé–Tokoin International Airport - Togo
+509. [OXB] Osvaldo Vieira International Airport - Guinea-Bissau
+510. [CKY] Conakry International Airport - Guinea
+511. [SID] Amílcar Cabral International Airport - Cape Verde
+512. [RAI] Nelson Mandela International Airport - Cape Verde
+513. [VXE] Cesária Évora Airport - Cape Verde
+514. [BJM] Bujumbura International Airport - Burundi
+515. [EBB] Entebbe International Airport - Uganda
+516. [NBO] Jomo Kenyatta International Airport - Kenya
+517. [MBA] Moi International Airport - Kenya
+518. [KIS] Kisumu International Airport - Kenya
+519. [DAR] Julius Nyerere International Airport - Tanzania
+520. [ZNZ] Abeid Amani Karume International Airport - Tanzania
+521. [JRO] Kilimanjaro International Airport - Tanzania
+522. [KGL] Kigali International Airport - Rwanda
+523. [FIH] N'djili Airport - DR Congo
+524. [FBM] Lubumbashi International Airport - DR Congo
+525. [BZV] Maya-Maya Airport - Republic of the Congo
+526. [PNR] Agostinho-Neto International Airport - Republic of the Congo
+527. [LBV] Libreville International Airport - Gabon
+528. [NSI] Yaoundé Nsimalen International Airport - Cameroon
+529. [DLA] Douala International Airport - Cameroon
+530. [NDJ] N'Djamena International Airport - Chad
+531. [BGF] Bangui M'Poko International Airport - Central African Republic
+532. [ADD] Addis Ababa Bole International Airport - Ethiopia
+533. [DIR] Aba Tenna Dejazmach Yilma International Airport - Ethiopia
+534. [ASM] Asmara International Airport - Eritrea
+535. [JIB] Djibouti–Ambouli International Airport - Djibouti
+536. [MGQ] Aden Adde International Airport - Somalia
+537. [HGA] Hargeisa International Airport - Somalia
+538. [LUN] Kenneth Kaunda International Airport - Zambia
+539. [NLA] Simon Mwansa Kapwepwe International Airport - Zambia
+540. [HRE] Robert Gabriel Mugabe International Airport - Zimbabwe
+541. [VFA] Victoria Falls Airport - Zimbabwe
+542. [BUQ] Joshua Mqabuko Nkomo International Airport - Zimbabwe
+543. [LAD] Quatro de Fevereiro Airport - Angola
+544. [JNB] O. R. Tambo International Airport - South Africa
+545. [CPT] Cape Town International Airport - South Africa
+546. [DUR] King Shaka International Airport - South Africa
+547. [PLZ] Chief Dawid Stuurman International Airport - South Africa
+548. [GRJ] George Airport - South Africa
+549. [BFN] Bram Fischer International Airport - South Africa
+550. [ELS] East London Airport - South Africa
+551. [MQP] Kruger Mpumalanga International Airport - South Africa
+552. [WDH] Hosea Kutako International Airport - Namibia
+553. [ERS] Eros Airport - Namibia
+554. [GBE] Sir Seretse Khama International Airport - Botswana
+555. [MUB] Maun Airport - Botswana
+556. [MPM] Maputo International Airport - Mozambique
+557. [BEW] Beira Airport - Mozambique
+558. [TNR] Ivato International Airport - Madagascar
+559. [NOS] Fascene Airport - Madagascar
+560. [MRU] Sir Seewoosagur Ramgoolam International Airport - Mauritius
+561. [RUN] Roland Garros Airport - Réunion
+562. [ZSE] Pierrefonds Airport - Réunion
+563. [SEZ] Seychelles International Airport - Seychelles
+564. [LGA] LaGuardia Airport - USA
+565. [IAD] Washington Dulles International Airport - USA
+566. [DCA] Ronald Reagan Washington National Airport - USA
+567. [SAN] San Diego International Airport - USA
+568. [TPA] Tampa International Airport - USA
+569. [PDX] Portland International Airport - USA
+570. [HNL] Daniel K. Inouye International Airport - USA
+571. [OGG] Kahului Airport - USA
+572. [KOA] Ellison Onizuka Kona International Airport - USA
+573. [LIH] Lihue Airport - USA
+574. [ANC] Ted Stevens Anchorage International Airport - USA
+575. [FAI] Fairbanks International Airport - USA
+576. [SJU] Luis Muñoz Marín International Airport - Puerto Rico
+577. [STT] Cyril E. King Airport - US Virgin Islands
+578. [STX] Henry E. Rohlsen Airport - US Virgin Islands
+579. [GUM] Antonio B. Won Pat International Airport - Guam
+580. [SPN] Saipan International Airport - Northern Mariana Islands
+581. [SNA] John Wayne Airport - USA
+582. [BUR] Hollywood Burbank Airport - USA
+583. [ONT] Ontario International Airport - USA
+584. [OAK] Oakland International Airport - USA
+585. [SJC] San Jose Mineta International Airport - USA
+586. [SMF] Sacramento International Airport - USA
+587. [RNO] Reno-Tahoe International Airport - USA
+588. [BOI] Boise Airport - USA
+589. [GEG] Spokane International Airport - USA
+590. [FAT] Fresno Yosemite International Airport - USA
+591. [PSP] Palm Springs International Airport - USA
+592. [SBA] Santa Barbara Municipal Airport - USA
+593. [TUS] Tucson International Airport - USA
+594. [ABQ] Albuquerque International Sunport - USA
+595. [ELP] El Paso International Airport - USA
+596. [SAT] San Antonio International Airport - USA
+597. [AUS] Austin-Bergstrom International Airport - USA
+598. [DAL] Dallas Love Field - USA
+599. [HOU] William P. Hobby Airport - USA
+600. [OKC] Will Rogers World Airport - USA
+601. [TUL] Tulsa International Airport - USA
+602. [LIT] Bill and Hillary Clinton National Airport - USA
+603. [XNA] Northwest Arkansas National Airport - USA
+604. [MSY] Louis Armstrong New Orleans International Airport - USA
+605. [GPT] Gulfport-Biloxi International Airport - USA
+606. [JAN] Jackson–Medgar Wiley Evers International Airport - USA
+607. [MEM] Memphis International Airport - USA
+608. [BNA] Nashville International Airport - USA
+609. [TYS] McGhee Tyson Airport - USA
+610. [SDF] Louisville Muhammad Ali International Airport - USA
+611. [LEX] Blue Grass Airport - USA
+612. [IND] Indianapolis International Airport - USA
+613. [FWA] Fort Wayne International Airport - USA
+614. [CVG] Cincinnati/Northern Kentucky International Airport - USA
+615. [CLE] Cleveland Hopkins International Airport - USA
+616. [CMH] John Glenn Columbus International Airport - USA
+617. [DAY] James M. Cox Dayton International Airport - USA
+618. [CAK] Akron-Canton Airport - USA
+619. [TOL] Eugene F. Kranz Toledo Express Airport - USA
+620. [PIT] Pittsburgh International Airport - USA
+621. [MDT] Harrisburg International Airport - USA
+622. [ABE] Lehigh Valley International Airport - USA
+623. [AVP] Wilkes-Barre/Scranton International Airport - USA
+624. [ERI] Erie International Airport - USA
+625. [BUF] Buffalo Niagara International Airport - USA
+626. [ROC] Greater Rochester International Airport - USA
+627. [SYR] Syracuse Hancock International Airport - USA
+628. [ALB] Albany International Airport - USA
+629. [PVD] Rhode Island T. F. Green International Airport - USA
+630. [BDL] Bradley International Airport - USA
+631. [MHT] Manchester–Boston Regional Airport - USA
+632. [PWM] Portland International Jetport - USA
+633. [BGR] Bangor International Airport - USA
+634. [BTV] Patrick Leahy Burlington International Airport - USA
+635. [ORF] Norfolk International Airport - USA
+636. [RIC] Richmond International Airport - USA
+637. [ROA] Roanoke–Blacksburg Regional Airport - USA
+638. [PHF] Newport News/Williamsburg International Airport - USA
+639. [GSO] Piedmont Triad International Airport - USA
+640. [RDU] Raleigh-Durham International Airport - USA
+641. [AVL] Asheville Regional Airport - USA
+642. [ILM] Wilmington International Airport - USA
+643. [FAY] Fayetteville Regional Airport - USA
+644. [CHS] Charleston International Airport - USA
+645. [MYR] Myrtle Beach International Airport - USA
+646. [GSP] Greenville-Spartanburg International Airport - USA
+647. [CAE] Columbia Metropolitan Airport - USA
+648. [SAV] Savannah/Hilton Head International Airport - USA
+649. [AGS] Augusta Regional Airport - USA
+650. [PNS] Pensacola International Airport - USA
+651. [VPS] Destin-Fort Walton Beach Airport - USA
+652. [ECP] Northwest Florida Beaches International Airport - USA
+653. [TLH] Tallahassee International Airport - USA
+654. [JAX] Jacksonville International Airport - USA
+655. [DAB] Daytona Beach International Airport - USA
+656. [SFB] Orlando Sanford International Airport - USA
+657. [PIE] St. Pete–Clearwater International Airport - USA
+658. [SRQ] Sarasota Bradenton International Airport - USA
+659. [RSW] Southwest Florida International Airport - USA
+660. [PBI] Palm Beach International Airport - USA
+661. [EYW] Key West International Airport - USA
+662. [BHM] Birmingham-Shuttlesworth International Airport - USA
+663. [HSV] Huntsville International Airport - USA
+664. [MOB] Mobile Regional Airport - USA
+665. [MGM] Montgomery Regional Airport - USA
+666. [MKE] Milwaukee Mitchell International Airport - USA
+667. [MSN] Dane County Regional Airport - USA
+668. [GRB] Green Bay–Austin Straubel International Airport - USA
+669. [ATW] Appleton International Airport - USA
+670. [MDW] Chicago Midway International Airport - USA
+671. [MLI] Quad Cities International Airport - USA
+672. [PIA] General Wayne A. Downing Peoria International Airport - USA
+673. [BMI] Central Illinois Regional Airport - USA
+674. [SPI] Abraham Lincoln Capital Airport - USA
+675. [STL] St. Louis Lambert International Airport - USA
+676. [MCI] Kansas City International Airport - USA
+677. [SGF] Springfield-Branson National Airport - USA
+678. [DSM] Des Moines International Airport - USA
+679. [CID] The Eastern Iowa Airport - USA
+680. [OMA] Eppley Airfield - USA
+681. [LNK] Lincoln Airport - USA
+682. [FSD] Sioux Falls Regional Airport - USA
+683. [RAP] Rapid City Regional Airport - USA
+684. [FAR] Hector International Airport - USA
+685. [BIS] Bismarck Municipal Airport - USA
+686. [BIL] Billings Logan International Airport - USA
+687. [BZN] Bozeman Yellowstone International Airport - USA
+688. [MSO] Missoula Montana Airport - USA
+689. [HLN] Helena Regional Airport - USA
+690. [GTF] Great Falls International Airport - USA
+691. [FCA] Glacier Park International Airport - USA
+692. [JAC] Jackson Hole Airport - USA
+693. [CPR] Casper–Natrona County International Airport - USA
+694. [CYS] Cheyenne Regional Airport - USA
+695. [COS] Colorado Springs Airport - USA
+696. [GJT] Grand Junction Regional Airport - USA
+697. [ASE] Aspen-Pitkin County Airport - USA
+698. [EGE] Eagle County Regional Airport - USA
+699. [AZA] Phoenix-Mesa Gateway Airport - USA
+700. [YUL] Montréal-Trudeau International Airport - Canada
+701. [YYC] Calgary International Airport - Canada
+702. [YEG] Edmonton International Airport - Canada
+703. [YOW] Ottawa Macdonald-Cartier International Airport - Canada
+704. [YWG] Winnipeg James Armstrong Richardson International Airport - Canada
+705. [YHZ] Halifax Stanfield International Airport - Canada
+706. [YQG] Windsor International Airport - Canada
+707. [YQB] Québec City Jean Lesage International Airport - Canada
+708. [YTEx] Tromso - Norway
+709. [YQM] Greater Moncton Roméo LeBlanc International Airport - Canada
+710. [YYT] St. John's International Airport - Canada
+711. [YKA] Kamloops Airport - Canada
+712. [YLW] Kelowna International Airport - Canada
+713. [YXS] Prince George Airport - Canada
+714. [YXT] Northwest Regional Airport Terrace-Kitimat - Canada
+715. [YYJ] Victoria International Airport - Canada
+716. [YCD] Nanaimo Airport - Canada
+717. [YQQ] Comox Valley Airport - Canada
+718. [YMM] Fort McMurray International Airport - Canada
+719. [YQU] Grande Prairie Airport - Canada
+720. [YQR] Regina International Airport - Canada
+721. [YXE] Saskatoon John G. Diefenbaker International Airport - Canada
+722. [YQT] Thunder Bay International Airport - Canada
+723. [YSB] Sudbury Airport - Canada
+724. [YAM] Sault Ste. Marie Airport - Canada
+725. [YXU] London International Airport - Canada
+726. [YKF] Region of Waterloo International Airport - Canada
+727. [YHM] John C. Munro Hamilton International Airport - Canada
+728. [YGK] Kingston Norman Rogers Airport - Canada
+729. [YVO] Val-d'Or Airport - Canada
+730. [YGW] Kuujjuarapik Airport - Canada
+731. [YVP] Kuujjuaq Airport - Canada
+732. [YFB] Iqaluit Airport - Canada
+733. [YXY] Erik Nielsen Whitehorse International Airport - Canada
+734. [YZF] Yellowknife Airport - Canada
+735. [GDL] Guadalajara International Airport - Mexico
+736. [MTY] Monterrey International Airport - Mexico
+737. [TIJ] Tijuana International Airport - Mexico
+738. [SJD] Los Cabos International Airport - Mexico
+739. [PVR] Lic. Gustavo Díaz Ordaz International Airport - Mexico
+740. [MID] Mérida International Airport - Mexico
+741. [BJX] Del Bajío International Airport - Mexico
+742. [VSA] Carlos Rovirosa Pérez International Airport - Mexico
+743. [HMO] General Ignacio Pesqueira García International Airport - Mexico
+744. [CUL] Federal de Bachigualato International Airport - Mexico
+745. [VER] General Heriberto Jara International Airport - Mexico
+746. [OAX] Oaxaca International Airport - Mexico
+747. [TGZ] Ángel Albino Corzo International Airport - Mexico
+748. [CJS] Abraham González International Airport - Mexico
+749. [TRC] Francisco Sarabia International Airport - Mexico
+750. [MAM] General Servando Canales International Airport - Mexico
+751. [NLD] Quetzalcóatl International Airport - Mexico
+752. [REX] General Lucio Blanco International Airport - Mexico
+753. [TAM] General Francisco Javier Mina International Airport - Mexico
+754. [CME] Ciudad del Carmen International Airport - Mexico
+755. [Chetumal] Chetumal International Airport - Mexico
+756. [ACA] General Juan N. Álvarez International Airport - Mexico
+757. [ZIH] Ixtapa-Zihuatanejo International Airport - Mexico
+758. [MLM] General Francisco Mujica International Airport - Mexico
+759. [AGU] Lic. Jesús Terán Peredo International Airport - Mexico
+760. [SLP] San Luis Potosí International Airport - Mexico
+761. [QRO] Querétaro International Airport - Mexico
+762. [PBC] Hermanos Serdán International Airport - Mexico
+763. [TLC] Toluca International Airport - Mexico
+764. [GUA] La Aurora International Airport - Guatemala
+765. [FRS] Mundo Maya International Airport - Guatemala
+766. [SAL] El Salvador International Airport - El Salvador
+767. [SAP] Ramón Villeda Morales International Airport - Honduras
+768. [TGU] Toncontín International Airport - Honduras
+769. [XPL] Comayagua International Airport - Honduras
+770. [RTB] Juan Manuel Gálvez International Airport - Honduras
+771. [MGA] Augusto C. Sandino International Airport - Nicaragua
+772. [SJO] Juan Santamaría International Airport - Costa Rica
+773. [LIR] Guanacaste Airport - Costa Rica
+774. [PTY] Tocumen International Airport - Panama
+775. [PAC] Albrook Marcos A. Gelabert International Airport - Panama
+776. [BLB] Panamá Pacífico International Airport - Panama
+777. [NAS] Lynden Pindling International Airport - Bahamas
+778. [FPO] Grand Bahama International Airport - Bahamas
+779. [GGT] Exuma International Airport - Bahamas
+780. [HAV] José Martí International Airport - Cuba
+781. [VRA] Juan Gualberto Gómez Airport - Cuba
+782. [HOG] Frank País Airport - Cuba
+783. [SNU] Abel Santamaría Airport - Cuba
+784. [VRO] Kawama Airport - Cuba
+785. [KIN] Norman Manley International Airport - Jamaica
+786. [MBJ] Sangster International Airport - Jamaica
+787. [PAP] Toussaint Louverture International Airport - Haiti
+788. [CAP] Hugo Chávez International Airport - Haiti
+789. [SDQ] Las Américas International Airport - Dominican Republic
+790. [PUJ] Punta Cana International Airport - Dominican Republic
+791. [STI] Cibao International Airport - Dominican Republic
+792. [POP] Gregorio Luperón International Airport - Dominican Republic
+793. [LRM] La Romana International Airport - Dominican Republic
+794. [AZS] Samaná El Catey International Airport - Dominican Republic
+795. [BQN] Rafael Hernández Airport - Puerto Rico
+796. [PSE] Mercedita Airport - Puerto Rico
+797. [ANU] V. C. Bird International Airport - Antigua and Barbuda
+798. [SXM] Princess Juliana International Airport - Sint Maarten
+799. [SBH] Gustaf III Airport - Saint Barthélemy
+800. [AXA] Clayton J. Lloyd International Airport - Anguilla
+801. [SKB] Robert L. Bradshaw International Airport - Saint Kitts and Nevis
+802. [NEV] Vance W. Amory International Airport - Saint Kitts and Nevis
+803. [DOM] Douglas-Charles Airport - Dominica
+804. [DCF] Canefield Airport - Dominica
+805. [PTP] Pointe-à-Pitre International Airport - Guadeloupe
+806. [FDF] Martinique Aimé Césaire International Airport - Martinique
+807. [SLU] George F. L. Charles Airport - Saint Lucia
+808. [UVF] Hewanorna International Airport - Saint Lucia
+809. [SVD] Argyle International Airport - Saint Vincent and the Grenadines
+810. [GND] Maurice Bishop International Airport - Grenada
+811. [POS] Piarco International Airport - Trinidad and Tobago
+812. [TAB] A. N. R. Robinson International Airport - Trinidad and Tobago
+813. [AUA] Queen Beatrix International Airport - Aruba
+814. [CUR] Curaçao International Airport - Curaçao
+815. [BON] Flamingo International Airport - Bonaire
+816. [CCS] Simón Bolívar International Airport - Venezuela
+817. [PMV] Santiago Mariño Caribbean International Airport - Venezuela
+818. [MAR] La Chinita International Airport - Venezuela
+819. [VLN] Arturo Michelena International Airport - Venezuela
+820. [MDE] José María Córdova International Airport - Colombia
+821. [EOH] Enrique Olaya Herrera Airport - Colombia
+822. [CLO] Alfonso Bonilla Aragón International Airport - Colombia
+823. [CTG] Rafael Núñez International Airport - Colombia
+824. [BAQ] Ernesto Cortissoz International Airport - Colombia
+825. [SMR] Simón Bolívar International Airport - Colombia
+826. [PEI] Matecaña International Airport - Colombia
+827. [BGA] Palonegro International Airport - Colombia
+828. [CUC] Camilo Daza International Airport - Colombia
+829. [ADZ] Gustavo Rojas Pinilla International Airport - Colombia
+830. [UIO] Mariscal Sucre International Airport - Ecuador
+831. [GYE] José Joaquín de Olmedo International Airport - Ecuador
+832. [CUE] Mariscal Lamar International Airport - Ecuador
+833. [GPS] Seymour Airport - Ecuador
+834. [SCY] San Cristóbal Airport - Ecuador
+835. [LIM] Jorge Chávez International Airport - Peru
+836. [CUZ] Alejandro Velasco Astete International Airport - Peru
+837. [AQP] Rodríguez Ballón International Airport - Peru
+838. [TRU] Cap. FAP Carlos Martínez de Pinillos International Airport - Peru
+839. [PIU] Cap. FAP Guillermo Concha Iberico International Airport - Peru
+840. [IQT] Crnl. FAP Francisco Secada Vignetta International Airport - Peru
+841. [LPB] El Alto International Airport - Bolivia
+842. [VVI] Viru Viru International Airport - Bolivia
+843. [SRE] Juana Azurduy de Padilla International Airport - Bolivia
+844. [CBB] Jorge Wilstermann International Airport - Bolivia
+845. [SCL] Arturo Merino Benítez International Airport - Chile
+846. [ANF] Andrés Sabella Gálvez International Airport - Chile
+847. [CJC] El Loa Airport - Chile
+848. [IQQ] Diego Aracena International Airport - Chile
+849. [PUQ] Carlos Ibáñez del Campo International Airport - Chile
+850. [PMC] El Tepual Airport - Chile
+851. [IPC] Mataveri International Airport - Chile
+852. [EZE] Ministro Pistarini International Airport - Argentina
+853. [AEP] Jorge Newbery Airfield - Argentina
+854. [COR] Ingeniero Aeronáutico Ambrosio L.V. Taravella International Airport - Argentina
+855. [MDZ] Governor Francisco Gabrielli International Airport - Argentina
+856. [BRC] San Carlos de Bariloche Airport - Argentina
+857. [SLA] Martin Miguel de Güemes International Airport - Argentina
+858. [IGR] Cataratas del Iguazú International Airport - Argentina
+859. [USH] Ushuaia – Malvinas Argentinas International Airport - Argentina
+860. [FTE] Comandante Armando Tola International Airport - Argentina
+861. [MVD] Carrasco International Airport - Uruguay
+862. [PDP] Capitán de Corbeta Carlos A. Curbelo International Airport - Uruguay
+863. [ASU] Silvio Pettirossi International Airport - Paraguay
+864. [AGT] Guaraní International Airport - Paraguay
+865. [CGH] São Paulo/Congonhas Airport - Brazil
+866. [GIG] Rio de Janeiro/Galeão International Airport - Brazil
+867. [SDU] Santos Dumont Airport - Brazil
+868. [BSB] Brasília International Airport - Brazil
+869. [CNF] Belo Horizonte/Pampulha – Carlos Drummond de Andrade Airport - Brazil
+870. [VCP] Viracopos International Airport - Brazil
+871. [CWB] Afonso Pena International Airport - Brazil
+872. [POA] Salgado Filho International Airport - Brazil
+873. [REC] Recife/Guararapes–Gilberto Freyre International Airport - Brazil
+874. [SSA] Salvador International Airport - Brazil
+875. [FOR] Pinto Martins – Fortaleza International Airport - Brazil
+876. [MAO] Eduardo Gomes International Airport - Brazil
+877. [BEL] Val de Cans International Airport - Brazil
+878. [NAT] Greater Natal International Airport - Brazil
+879. [MCZ] Zumbi dos Palmares International Airport - Brazil
+880. [FLN] Florianópolis-Hercílio Luz International Airport - Brazil
+881. [GYN] Goiânia International Airport - Brazil
+882. [VIX] Eurico de Aguiar Salles Airport - Brazil
+883. [CGB] Marechal Rondon International Airport - Brazil
+884. [CGR] Campo Grande International Airport - Brazil
+885. [IGU] Foz do Iguaçu International Airport - Brazil
+886. [PMW] Palmas Airport - Brazil
+887. [PVH] Governador Jorge Teixeira de Oliveira International Airport - Brazil
+888. [RBR] Rio Branco International Airport - Brazil
+889. [MCP] Macapá International Airport - Brazil
+890. [STM] Santarém International Airport - Brazil
+891. [BVB] Boa Vista International Airport - Brazil
+892. [SLZ] Marechal Cunha Machado International Airport - Brazil
+893. [THE] Teresina Airport - Brazil
+894. [AJU] Santa Maria Airport - Brazil
+895. [JPA] Presidente Castro Pinto International Airport - Brazil
+896. [GEO] Cheddi Jagan International Airport - Guyana
+897. [OGL] Eugene F. Correira International Airport - Guyana
+898. [PBM] Johan Adolf Pengel International Airport - Suriname
+899. [CAY] Cayenne – Félix Eboué Airport - French Guiana
+900. [BNE] Brisbane Airport - Australia
+901. [PER] Perth Airport - Australia
+902. [ADL] Adelaide Airport - Australia
+903. [CNS] Cairns Airport - Australia
+904. [DRW] Darwin International Airport - Australia
+905. [OOL] Gold Coast Airport - Australia
+906. [HBA] Hobart International Airport - Australia
+907. [CBR] Canberra Airport - Australia
+908. [TSV] Townsville Airport - Australia
+909. [MKY] Mackay Airport - Australia
+910. [PPP] Whitsunday Coast Airport - Australia
+911. [BME] Broome International Airport - Australia
+912. [KTA] Karratha Airport - Australia
+913. [PHE] Port Hedland International Airport - Australia
+914. [ASP] Alice Springs Airport - Australia
+915. [AYQ] Ayers Rock Airport - Australia
+916. [AKL] Auckland Airport - New Zealand
+917. [CHC] Christchurch Airport - New Zealand
+918. [WLG] Wellington Airport - New Zealand
+919. [ZQN] Queenstown Airport - New Zealand
+920. [DUD] Dunedin Airport - New Zealand
+921. [NPE] Hawke's Bay Airport - New Zealand
+922. [NPL] New Plymouth Airport - New Zealand
+923. [PMR] Palmerston North Airport - New Zealand
+924. [NSN] Nelson Airport - New Zealand
+925. [BHE] Woodbourne Airport - New Zealand
+926. [ROT] Rotorua Regional Airport - New Zealand
+927. [IVC] Invercargill Airport - New Zealand
+928. [NAN] Nadi International Airport - Fiji
+929. [SUV] Nausori International Airport - Fiji
+930. [PPT] Fa'a'ā International Airport - French Polynesia
+931. [BOB] Bora Bora Airport - French Polynesia
+932. [NOU] La Tontouta International Airport - New Caledonia
+933. [GEA] Nouméa Magenta Airport - New Caledonia
+934. [VLI] Bauerfield International Airport - Vanuatu
+935. [SON] Santo Pekoa International Airport - Vanuatu
+936. [HIR] Honiara International Airport - Solomon Islands
+937. [POM] Jacksons International Airport - Papua New Guinea
+938. [LAE] Lae Nadzab Airport - Papua New Guinea
+939. [TBU] Fuaʻamotu International Airport - Tonga
+940. [APW] Faleolo International Airport - Samoa
+941. [PPG] Pago Pago International Airport - American Samoa
+942. [RAR] Rarotonga International Airport - Cook Islands
+943. [TNI] Satwag Airport - Indonesia
