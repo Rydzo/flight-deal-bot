@@ -152,35 +152,117 @@ class RapidApiKiwiClient:
         
         data = self._make_request_with_retry("/flights/price-map", **params)
         
+        # Diagnostyka — loguj surową odpowiedź API
+        if data:
+            keys = list(data.keys()) if isinstance(data, dict) else type(data).__name__
+            logger.info(f"[DEBUG] Odpowiedź API price-map klucze: {keys}")
+            # Loguj próbkę danych (pierwsze 500 znaków)
+            import json
+            sample = json.dumps(data, ensure_ascii=False)[:500]
+            logger.info(f"[DEBUG] Próbka odpowiedzi: {sample}")
+        else:
+            logger.warning(f"[DEBUG] API price-map zwróciło None/pustą odpowiedź dla {origin}")
+        
         results = []
-        if data and isinstance(data, dict) and 'entries' in data:
-            for item in data['entries']:
-                try:
+        if not data or not isinstance(data, dict):
+            logger.info(f"Znaleziono {len(results)} inspiracji z lotniska {origin}")
+            return results
+        
+        # Sprawdź różne możliwe struktury odpowiedzi
+        items = []
+        if 'entries' in data:
+            items = data['entries']
+        elif 'data' in data:
+            items = data['data'] if isinstance(data['data'], list) else []
+        elif 'results' in data:
+            items = data['results'] if isinstance(data['results'], list) else []
+        elif 'flights' in data:
+            items = data['flights'] if isinstance(data['flights'], list) else []
+        
+        logger.info(f"[DEBUG] Znaleziono {len(items)} elementów w odpowiedzi price-map")
+        
+        for item in items:
+            try:
+                # Obsłuż różne formaty odpowiedzi
+                if isinstance(item, dict):
                     dest_info = item.get('destination', {})
-                    dest_name = dest_info.get('name', '')
-                    
-                    # Kiwi zwraca IATA code w polu 'code'. Pobieramy je, aby dopasować z bazą lotnisk.
-                    dest_code = dest_info.get('code', '')
-                    if not dest_code:
-                        dest_code = dest_name
-                    
-                    dest_id = dest_info.get('id', '')
+                    if isinstance(dest_info, dict):
+                        dest_code = dest_info.get('code', '') or dest_info.get('iata', '') or dest_info.get('name', '')
+                    elif isinstance(dest_info, str):
+                        dest_code = dest_info
+                    else:
+                        dest_code = ''
                     
                     price = float(item.get('price', 0))
-                    if max_price and price > max_price:
-                        continue
-                        
-                    results.append({
-                        'destination': dest_code,
-                        'departure_date': start_date, # price-map rzadko podaje datę bezpośrednio w głównym drzewie
-                        'return_date': '',
-                        'price': price,
+                else:
+                    continue
+                    
+                if not dest_code or not price or price <= 0:
+                    continue
+                if max_price and price > max_price:
+                    continue
+                    
+                results.append({
+                    'destination': dest_code,
+                    'departure_date': start_date,
+                    'return_date': '',
+                    'price': price,
+                    'currency': currency,
+                    'origin': origin,
+                    'booking_link': self._generate_booking_link(origin, dest_code, start_date),
+                })
+            except Exception as e:
+                logger.warning(f"Błąd parsowania price-map: {e}")
+                    
+        # Jeśli price-map nie dał wyników, spróbuj search-oneway dla popularnych destynacji
+        if not results:
+            logger.info(f"[FALLBACK] Price-map pusty dla {origin}, próbuję search-oneway dla popularnych destynacji...")
+            popular_destinations = ['LON', 'BCN', 'PAR', 'ROM', 'BER', 'AMS', 'PRG', 'BUD', 'VIE', 'MIL']
+            for dest in popular_destinations:
+                try:
+                    fb_params = {
+                        'source': origin,
+                        'destination': dest,
+                        'departure_date': start_date,
+                        'adults': 1,
                         'currency': currency,
-                        'origin': origin,
-                        'booking_link': self._generate_booking_link(origin, dest_code, start_date),
-                    })
+                        'limit': 5
+                    }
+                    fb_data = self._make_request_with_retry("/flights/search-oneway", **fb_params)
+                    if fb_data:
+                        fb_items = []
+                        if isinstance(fb_data, dict):
+                            if 'data' in fb_data:
+                                fb_items = fb_data['data'] if isinstance(fb_data['data'], list) else []
+                            elif 'flights' in fb_data:
+                                fb_items = fb_data['flights'] if isinstance(fb_data['flights'], list) else []
+                            elif 'results' in fb_data:
+                                fb_items = fb_data['results'] if isinstance(fb_data['results'], list) else []
+                        
+                        if fb_items:
+                            logger.info(f"[FALLBACK] Znaleziono {len(fb_items)} lotów {origin} → {dest}")
+                            # Loguj próbkę pierwszego elementu
+                            import json
+                            logger.info(f"[FALLBACK DEBUG] Próbka elementu: {json.dumps(fb_items[0], ensure_ascii=False)[:300]}")
+                        
+                        for fb_item in fb_items[:3]:
+                            try:
+                                price = float(fb_item.get('price', 0))
+                                if price <= 0:
+                                    continue
+                                results.append({
+                                    'destination': dest,
+                                    'departure_date': fb_item.get('local_departure', start_date)[:10],
+                                    'return_date': '',
+                                    'price': price,
+                                    'currency': currency,
+                                    'origin': origin,
+                                    'booking_link': fb_item.get('deep_link', self._generate_booking_link(origin, dest, start_date)),
+                                })
+                            except Exception as e:
+                                logger.warning(f"Błąd parsowania fallback: {e}")
                 except Exception as e:
-                    logger.warning(f"Błąd parsowania price-map: {e}")
+                    logger.warning(f"Błąd fallback search {origin}→{dest}: {e}")
                     
         logger.info(f"Znaleziono {len(results)} inspiracji z lotniska {origin}")
         return results
