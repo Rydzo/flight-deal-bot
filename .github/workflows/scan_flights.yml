@@ -47,7 +47,7 @@ jobs:
         run: |
           git config user.name "Flight Deal Bot 🤖"
           git config user.email "bot@github-actions.com"
-          git add data/price_history.json data/last_update_id.txt
+          git add data/price_history.json
           
           # Commituj tylko jeśli są zmiany
           if git diff --staged --quiet; then

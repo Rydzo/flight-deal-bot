@@ -47,7 +47,7 @@ class TestPriceAnalyzer:
             current_price=15.0, route_key="WAW-BER", country="Germany"
         )
         assert is_bugged is True
-        assert reason == "ABSOLUTE_THRESHOLD"
+        assert "progu absolutnego" in reason
 
     def test_absolute_threshold_europe_long(self):
         """Lot w Europie (daleki) za 50 PLN powinien być zbugowany."""
@@ -55,7 +55,7 @@ class TestPriceAnalyzer:
             current_price=50.0, route_key="WAW-LIS", country="Portugal"
         )
         assert is_bugged is True
-        assert reason == "ABSOLUTE_THRESHOLD"
+        assert "progu absolutnego" in reason
 
     def test_absolute_threshold_asia(self):
         """Lot do Azji za 300 PLN powinien być zbugowany."""
@@ -63,7 +63,7 @@ class TestPriceAnalyzer:
             current_price=300.0, route_key="WAW-NRT", country="Japan"
         )
         assert is_bugged is True
-        assert reason == "ABSOLUTE_THRESHOLD"
+        assert "progu absolutnego" in reason
 
     def test_absolute_threshold_americas(self):
         """Lot do Ameryk za 500 PLN powinien być zbugowany."""
@@ -71,7 +71,7 @@ class TestPriceAnalyzer:
             current_price=500.0, route_key="WAW-JFK", country="USA"
         )
         assert is_bugged is True
-        assert reason == "ABSOLUTE_THRESHOLD"
+        assert "progu absolutnego" in reason
 
     def test_absolute_threshold_oceania(self):
         """Lot do Oceanii za 600 PLN powinien być zbugowany."""
@@ -79,7 +79,7 @@ class TestPriceAnalyzer:
             current_price=600.0, route_key="WAW-SYD", country="Australia"
         )
         assert is_bugged is True
-        assert reason == "ABSOLUTE_THRESHOLD"
+        assert "progu absolutnego" in reason
 
     def test_normal_price_not_bugged(self):
         """Normalny lot nie powinien być zbugowany."""
@@ -103,7 +103,7 @@ class TestPriceAnalyzer:
             current_price=600.0, route_key="WAW-BCN", country="Spain"
         )
         assert is_bugged is True
-        assert "DISCOUNT" in reason
+        assert "zniżki" in reason
 
     def test_discount_below_threshold(self):
         """Lot z 20% zniżką NIE powinien być zbugowany."""

@@ -206,42 +206,26 @@ class TelegramBot:
         logger.info("Obsługa komendy: test")
 
         try:
-            if not self.price_history_file.exists():
+            flight = self.analyzer.get_random_flight()
+            if not flight:
                 self.notifier.send_message(
                     "😔 Baza danych cen jest pusta.\nUruchom najpierw skanowanie lotów."
                 )
                 return
 
-            with open(self.price_history_file, "r", encoding="utf-8") as f:
-                price_history: dict = json.load(f)
+            route_data = self.analyzer.history.get("routes", {}).get(flight["route"], {})
+            prices = [p.get("price") for p in route_data.get("prices", [])]
 
-            if not price_history:
-                self.notifier.send_message(
-                    "😔 Baza danych cen jest pusta.\nUruchom najpierw skanowanie lotów."
-                )
-                return
-
-            # Losowy lot z bazy
-            route_key = random.choice(list(price_history.keys()))
-            route_data = price_history[route_key]
-
-            prices = route_data.get("prices", [])
-            last_price = prices[-1] if prices else 0
-            avg_price = sum(prices) / len(prices) if prices else 0
-
-            flight = {
-                "route": route_key,
+            flight_data = {
+                "route": flight["route"],
                 "prices": prices,
-                "country": route_data.get("country", ""),
-                "last_price": last_price,
-                "avg_price": round(avg_price, 2),
+                "country": flight["country"],
+                "last_price": flight["price"],
+                "avg_price": flight["avg_price"],
             }
 
-            self.notifier.send_test_flight(flight)
+            self.notifier.send_test_flight(flight_data)
 
-        except json.JSONDecodeError as exc:
-            logger.error(f"Błąd parsowania pliku z cenami: {exc}")
-            self.notifier.send_message("❌ Błąd odczytu bazy danych cen.")
         except Exception as exc:
             logger.error(f"Błąd podczas obsługi komendy test: {exc}")
             self.notifier.send_message("❌ Wystąpił błąd podczas pobierania losowego lotu.")
@@ -287,34 +271,21 @@ class TelegramBot:
         logger.info("Obsługa komendy: /deals")
 
         try:
-            if not self.deals_file.exists():
+            # Pobieramy ostatnie 10 okazji bezpośrednio z analizatora cen
+            recent_deals = self.analyzer.get_recent_deals(limit=10)
+
+            if not recent_deals:
                 self.notifier.send_message(
                     "📭 Nie wykryto jeszcze żadnych zbugowanych lotów.\n"
                     "Bot monitoruje ceny — poczekaj na kolejny skan!"
                 )
                 return
-
-            with open(self.deals_file, "r", encoding="utf-8") as f:
-                deals: list = json.load(f)
-
-            if not deals:
-                self.notifier.send_message(
-                    "📭 Nie wykryto jeszcze żadnych zbugowanych lotów.\n"
-                    "Bot monitoruje ceny — poczekaj na kolejny skan!"
-                )
-                return
-
-            # Ostatnie 10 zbugowanych lotów
-            recent_deals = deals[-10:]
 
             if len(recent_deals) == 1:
                 self.notifier.send_deal_alert(recent_deals[0])
             else:
                 self.notifier.send_batch_deals(recent_deals)
 
-        except json.JSONDecodeError as exc:
-            logger.error(f"Błąd parsowania pliku deals: {exc}")
-            self.notifier.send_message("❌ Błąd odczytu historii zbugowanych lotów.")
         except Exception as exc:
             logger.error(f"Błąd podczas obsługi komendy /deals: {exc}")
             self.notifier.send_message("❌ Wystąpił błąd podczas pobierania zbugowanych lotów.")
@@ -324,39 +295,10 @@ class TelegramBot:
         logger.info("Obsługa komendy: /stats")
 
         try:
-            # Zbierz statystyki z pliku historii cen
-            total_routes = 0
-            total_prices = 0
-
-            if self.price_history_file.exists():
-                with open(self.price_history_file, "r", encoding="utf-8") as f:
-                    price_history: dict = json.load(f)
-
-                total_routes = len(price_history)
-                total_prices = sum(
-                    len(route_data.get("prices", []))
-                    for route_data in price_history.values()
-                )
-
-            # Zbugowane loty
-            deals_found_total = 0
-            if self.deals_file.exists():
-                with open(self.deals_file, "r", encoding="utf-8") as f:
-                    deals: list = json.load(f)
-                deals_found_total = len(deals)
-
-            stats = {
-                "total_routes": total_routes,
-                "total_prices": total_prices,
-                "deals_found_total": deals_found_total,
-                "last_scan": datetime.now().isoformat(),
-            }
-
+            stats = self.analyzer.get_stats()
+            # Dopasowanie klucza do Notifiera
+            stats["deals_found_total"] = stats.get("total_deals", 0)
             self.notifier.send_stats(stats)
-
-        except json.JSONDecodeError as exc:
-            logger.error(f"Błąd parsowania pliku ze statystykami: {exc}")
-            self.notifier.send_message("❌ Błąd odczytu statystyk.")
         except Exception as exc:
             logger.error(f"Błąd podczas obsługi komendy /stats: {exc}")
             self.notifier.send_message("❌ Wystąpił błąd podczas generowania statystyk.")
@@ -365,46 +307,80 @@ class TelegramBot:
     # Główna pętla bota
     # ------------------------------------------------------------------
 
-    def run(self) -> None:
+    def run(self, loop: bool = False) -> None:
         """Uruchom bot — sprawdź nowe wiadomości i odpowiedz.
 
         Pobiera ostatni update_id, sprawdza nowe wiadomości,
         przetwarza każdą z nich i zapisuje nowy update_id.
         """
-        logger.info("Uruchamiam bota Telegram...")
+        import time
+        logger.info(f"Uruchamiam bota Telegram (loop={loop})...")
 
-        last_id = self.get_last_update_id()
-        offset = last_id + 1 if last_id > 0 else None
-
-        logger.info(f"Pobieram wiadomości od offset={offset}")
-
-        updates = self.get_updates(offset=offset)
-
-        if not updates:
-            logger.info("Brak nowych wiadomości.")
-            return
-
-        logger.info(f"Otrzymano {len(updates)} nowych wiadomości do przetworzenia.")
-
-        for update in updates:
-            update_id = update.get("update_id", 0)
-            message = update.get("message")
-
-            if message:
+        if loop:
+            logger.info("Bot działa w pętli ciągłej (real-time). Wciśnij Ctrl+C, aby zatrzymać.")
+            last_id = self.get_last_update_id()
+            offset = last_id + 1 if last_id > 0 else None
+            
+            while True:
                 try:
-                    self.process_message(message)
+                    updates = self.get_updates(offset=offset)
+                    if updates:
+                        logger.info(f"Otrzymano {len(updates)} nowych wiadomości do przetworzenia.")
+                        for update in updates:
+                            update_id = update.get("update_id", 0)
+                            message = update.get("message")
+
+                            if message:
+                                try:
+                                    self.process_message(message)
+                                except Exception as exc:
+                                    logger.error(f"Błąd przetwarzania wiadomości (update_id={update_id}): {exc}")
+
+                            last_id = max(last_id, update_id)
+                            offset = last_id + 1
+
+                        self.save_last_update_id(last_id)
+                    
+                    time.sleep(2)  # Odpytuj co 2 sekundy w pętli
+                except KeyboardInterrupt:
+                    logger.info("Zatrzymano bota przez użytkownika.")
+                    break
                 except Exception as exc:
-                    logger.error(f"Błąd przetwarzania wiadomości (update_id={update_id}): {exc}")
+                    logger.error(f"Błąd w pętli głównej bota: {exc}")
+                    time.sleep(5)  # Odczekaj dłużej w przypadku błędu
+        else:
+            last_id = self.get_last_update_id()
+            offset = last_id + 1 if last_id > 0 else None
 
-            # Zawsze aktualizuj last_update_id, nawet jeśli to nie wiadomość
-            last_id = max(last_id, update_id)
+            logger.info(f"Pobieram wiadomości od offset={offset}")
 
-        self.save_last_update_id(last_id)
-        logger.info(f"Przetworzono {len(updates)} wiadomości. Ostatni update_id: {last_id}")
+            updates = self.get_updates(offset=offset)
+
+            if not updates:
+                logger.info("Brak nowych wiadomości.")
+                return
+
+            logger.info(f"Otrzymano {len(updates)} nowych wiadomości do przetworzenia.")
+
+            for update in updates:
+                update_id = update.get("update_id", 0)
+                message = update.get("message")
+
+                if message:
+                    try:
+                        self.process_message(message)
+                    except Exception as exc:
+                        logger.error(f"Błąd przetwarzania wiadomości (update_id={update_id}): {exc}")
+
+                last_id = max(last_id, update_id)
+
+            self.save_last_update_id(last_id)
+            logger.info(f"Przetworzono {len(updates)} wiadomości. Ostatni update_id: {last_id}")
 
 
 def main() -> None:
     """Punkt wejścia dla telegram bota."""
+    import sys
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -413,8 +389,11 @@ def main() -> None:
     from dotenv import load_dotenv
     load_dotenv()
 
+    # Sprawdź czy pętla jest włączona przez argument lub zmienną środowiskową
+    loop = "--loop" in sys.argv or os.environ.get("TELEGRAM_LOOP", "").lower() == "true"
+
     bot = TelegramBot()
-    bot.run()
+    bot.run(loop=loop)
 
 
 if __name__ == "__main__":

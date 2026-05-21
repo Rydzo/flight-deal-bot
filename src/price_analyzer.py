@@ -9,7 +9,7 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 # Maksymalna liczba wpisów cenowych na trasę
-PRICE_HISTORY_MAX_ENTRIES: int = 100
+PRICE_HISTORY_MAX_ENTRIES: int = 30
 
 # Maksymalny wiek wpisu cenowego w dniach
 PRICE_HISTORY_MAX_AGE_DAYS: int = 90
@@ -93,10 +93,22 @@ class PriceAnalyzer:
         Returns:
             Słownik z historią cen lub domyślna struktura jeśli plik nie istnieje.
         """
+        default_history = {
+            'routes': {},
+            'deals': [],
+            'last_scan': None,
+            'total_scans': 0,
+        }
         if self.history_path.exists():
             try:
                 with open(self.history_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
+                if not isinstance(data, dict):
+                    data = {}
+                # Upewnij się, że wszystkie wymagane klucze istnieją w załadowanych danych
+                for key, val in default_history.items():
+                    if key not in data:
+                        data[key] = val
                 logger.info(
                     f"Załadowano historię cen: "
                     f"{len(data.get('routes', {}))} tras"
@@ -106,12 +118,7 @@ class PriceAnalyzer:
                 logger.error(f"Błąd odczytu historii cen: {e}")
                 logger.info("Tworzę nową historię cen")
 
-        return {
-            'routes': {},
-            'deals': [],
-            'last_scan': None,
-            'total_scans': 0,
-        }
+        return default_history
 
     def save_history(self) -> None:
         """Zapisz historię cen do pliku JSON."""
@@ -138,21 +145,31 @@ class PriceAnalyzer:
         logger.debug(f"Nie znaleziono regionu dla kraju: {country}")
         return 'unknown'
 
-    def add_price(self, route_key: str, price: float, date: str) -> None:
+    def add_price(
+        self,
+        route_key: str,
+        price: float,
+        date: str,
+        country: Optional[str] = None,
+    ) -> None:
         """Dodaj cenę do historii.
 
         Args:
             route_key: Klucz trasy w formacie 'WAW-NRT'.
             price: Cena lotu.
             date: Data wylotu w formacie 'YYYY-MM-DD'.
+            country: Nazwa kraju docelowego (opcjonalnie).
         """
         now = datetime.now().isoformat()
 
         if route_key not in self.history['routes']:
             self.history['routes'][route_key] = {
                 'prices': [],
-                'country': None,
+                'country': country,
             }
+        else:
+            if country and not self.history['routes'][route_key].get('country'):
+                self.history['routes'][route_key]['country'] = country
 
         route_data = self.history['routes'][route_key]
 
@@ -285,7 +302,7 @@ class PriceAnalyzer:
             route_key: Klucz trasy.
             price: Cena okazji.
             avg_price: Średnia cena historyczna.
-            reason: Powód uznania za okazję.
+            reason: Powób uznania za okazję.
         """
         now = datetime.now().isoformat()
         discount_pct = 0.0
@@ -301,9 +318,43 @@ class PriceAnalyzer:
             'reason': reason,
         }
 
+        # Usuń wersję uproszczoną dla tej samej trasy i ceny, jeśli istnieje, aby uniknąć duplikatów
+        self.history['deals'] = [
+            d for d in self.history.get('deals', [])
+            if not (d.get('route') == route_key and d.get('price') == price)
+        ]
         self.history['deals'].append(deal)
+        
+        self._deals_found = [
+            d for d in self._deals_found
+            if not (d.get('route') == route_key and d.get('price') == price)
+        ]
         self._deals_found.append(deal)
-        logger.info(f"Zapisano okazję: {route_key} za {price} PLN ({discount_pct:.1f}% zniżki)")
+        logger.debug(f"Zapisano okazję (uproszczoną): {route_key} za {price} PLN")
+
+    def add_deal(self, deal: dict) -> None:
+        """Dodaj pełną okazję do historii okazji, zastępując wersję uproszczoną.
+
+        Args:
+            deal: Słownik z pełnymi informacjami o okazji.
+        """
+        route_key = deal.get('route')
+        price = deal.get('price')
+        
+        # Zastąp wersję uproszczoną w historii wersją pełną z metadanymi
+        self.history['deals'] = [
+            d for d in self.history.get('deals', [])
+            if not (d.get('route') == route_key and d.get('price') == price)
+        ]
+        self.history['deals'].append(deal)
+        
+        # Zastąp wersję uproszczoną w buforze pamięci
+        self._deals_found = [
+            d for d in self._deals_found
+            if not (d.get('route') == route_key and d.get('price') == price)
+        ]
+        self._deals_found.append(deal)
+        logger.info(f"Zapisano pełną okazję do bazy: {route_key} za {price} PLN")
 
     def get_average_price(self, route_key: str) -> Optional[float]:
         """Pobierz średnią cenę dla trasy.

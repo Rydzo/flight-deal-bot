@@ -67,8 +67,8 @@ class RapidApiKiwiClient:
         origin: str,
         destination: str,
         date_from: str,
-        date_to: str | None = None,
-        max_price: int | None = None,
+        date_to: Optional[str] = None,
+        max_price: Optional[int] = None,
         currency: str = 'PLN',
     ) -> list[dict]:
         """Wyszukaj loty na konkretnej trasie."""
@@ -130,7 +130,7 @@ class RapidApiKiwiClient:
     def get_inspiration(
         self,
         origin: str,
-        max_price: int | None = None,
+        max_price: Optional[int] = None,
         currency: str = 'PLN',
     ) -> list[dict]:
         """Najtańsze destynacje z danego lotniska przez price-map."""
@@ -159,8 +159,11 @@ class RapidApiKiwiClient:
                     dest_info = item.get('destination', {})
                     dest_name = dest_info.get('name', '')
                     
-                    # Kiwi zwraca format "City:dublin_ie" zamiast IATA. 
-                    # Zapisujemy nazwę miasta (name), po której zrobimy lookup lub wyświetlimy użytkownikowi
+                    # Kiwi zwraca IATA code w polu 'code'. Pobieramy je, aby dopasować z bazą lotnisk.
+                    dest_code = dest_info.get('code', '')
+                    if not dest_code:
+                        dest_code = dest_name
+                    
                     dest_id = dest_info.get('id', '')
                     
                     price = float(item.get('price', 0))
@@ -168,14 +171,13 @@ class RapidApiKiwiClient:
                         continue
                         
                     results.append({
-                        # Price analyzer użyje nazwy kraju, więc tu wystarczy slug lub nazwa
-                        'destination': dest_name,
+                        'destination': dest_code,
                         'departure_date': start_date, # price-map rzadko podaje datę bezpośrednio w głównym drzewie
                         'return_date': '',
                         'price': price,
                         'currency': currency,
                         'origin': origin,
-                        'booking_link': self._generate_booking_link(origin, dest_name, start_date),
+                        'booking_link': self._generate_booking_link(origin, dest_code, start_date),
                     })
                 except Exception as e:
                     logger.warning(f"Błąd parsowania price-map: {e}")
