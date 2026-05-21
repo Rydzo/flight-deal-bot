@@ -261,10 +261,11 @@ class RapidApiKiwiClient:
                 }
                 
                 data = self._make_request_with_retry(
-                    "/flights/search-oneway", max_retries=1, **params
+                    "/flights/search-oneway", max_retries=3, **params
                 )
                 
                 if not data or not isinstance(data, dict):
+                    time.sleep(1.0)
                     continue
                 
                 itineraries = data.get('itineraries', [])
@@ -291,9 +292,8 @@ class RapidApiKiwiClient:
                     )
                     logger.info(f"  {origin} -> {dest}: {len(itineraries)} lotów, najtańszy {cheapest:.0f} PLN")
                 
-                # Krótka pauza co 5 zapytań, aby nie uderzyć w rate limit
-                if self._request_count % 5 == 0:
-                    time.sleep(0.5)
+                # Stała pauza między zapytaniami, aby szanować rate limit darmowego planu RapidAPI
+                time.sleep(1.2)
                     
             except Exception as e:
                 logger.warning(f"Błąd skanowania {origin} -> {dest}: {e}")
@@ -318,3 +318,199 @@ class RapidApiKiwiClient:
     def request_count(self) -> int:
         """Zwróć liczbę wykonanych zapytań API."""
         return self._request_count
+
+
+class TequilaKiwiClient:
+    """Klient oficjalnego API Kiwi.com (Tequila) do bezpośredniego wyszukiwania lotów."""
+
+    # Te same popularne destynacje co w RapidAPI
+    POPULAR_DESTINATIONS = RapidApiKiwiClient.POPULAR_DESTINATIONS
+
+    def __init__(self, api_key: str) -> None:
+        """Inicjalizacja klienta Kiwi Tequila."""
+        self.api_key = api_key
+        self.base_url = "https://api.tequila.kiwi.com/v2"
+        self._request_count = 0
+        logger.info("Oficjalny klient Kiwi Tequila API zainicjalizowany pomyślnie")
+
+    def _get_headers(self) -> dict:
+        return {
+            "apikey": self.api_key,
+            "Accept-Encoding": "gzip",
+            "Content-Type": "application/json"
+        }
+
+    def _make_request_with_retry(self, endpoint: str, max_retries: int = 3, **params) -> Optional[dict]:
+        """Wykonaj zapytanie API z obsługą retry i rate limiting."""
+        url = f"{self.base_url}{endpoint}"
+        for attempt in range(max_retries):
+            try:
+                self._request_count += 1
+                logger.debug(f"Zapytanie Tequila #{self._request_count} (próba {attempt + 1}/{max_retries}) do {endpoint}")
+                response = requests.get(url, headers=self._get_headers(), params=params, timeout=15)
+                
+                if response.status_code == 200:
+                    return response.json()
+                elif response.status_code == 429:
+                    logger.warning(f"Rate limit (429) z Tequila API (próba {attempt + 1})")
+                    if attempt < max_retries - 1:
+                        time.sleep(2 ** attempt)
+                        continue
+                else:
+                    logger.warning(f"Błąd Tequila API: status={response.status_code}, odpowiedź={response.text[:200]}")
+                    if response.status_code >= 500 and attempt < max_retries - 1:
+                        time.sleep(2 ** attempt)
+                        continue
+                    return None
+            except requests.RequestException as e:
+                logger.error(f"Błąd połączenia z Tequila API: {e}")
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)
+                    continue
+        return None
+
+    def search_flights(
+        self,
+        origin: str,
+        destination: str,
+        date_from: str,
+        date_to: Optional[str] = None,
+        max_price: Optional[int] = None,
+        currency: str = 'PLN',
+    ) -> list[dict]:
+        """Wyszukaj loty do konkretnej destynacji."""
+        # W Tequila format daty to dd/mm/yyyy (np. 04/06/2026)
+        try:
+            d_from = datetime.strptime(date_from, "%Y-%m-%d").strftime("%d/%m/%Y")
+        except ValueError:
+            d_from = date_from
+
+        params = {
+            'fly_from': origin,
+            'fly_to': destination,
+            'date_from': d_from,
+            'curr': currency,
+            'adults': 1,
+            'limit': 20
+        }
+
+        if date_to:
+            try:
+                d_to = datetime.strptime(date_to, "%Y-%m-%d").strftime("%d/%m/%Y")
+            except ValueError:
+                d_to = date_to
+            params['return_from'] = d_to
+            params['return_to'] = d_to
+
+        endpoint = "/search"
+        logger.info(f"Wyszukiwanie lotów Tequila: {origin} -> {destination}, data: {d_from}")
+
+        data = self._make_request_with_retry(endpoint, **params)
+        results = []
+        if not data or not isinstance(data, dict):
+            return results
+
+        flights_data = data.get('data', [])
+        for item in flights_data:
+            price = float(item.get('price', 0))
+            if max_price and price > max_price:
+                continue
+
+            local_dep = item.get('local_departure', '')
+            departure_date = local_dep[:10] if local_dep else date_from
+
+            airlines = [r.get('airline', '') for r in item.get('route', []) if r.get('airline')]
+            airline = airlines[0] if airlines else ''
+
+            results.append({
+                'destination': destination,
+                'departure_date': departure_date,
+                'return_date': date_to or '',
+                'price': price,
+                'currency': currency,
+                'origin': origin,
+                'airline': airline,
+                'booking_link': item.get('deep_link', ''),
+            })
+
+        logger.info(f"Znaleziono {len(results)} ofert lotów Tequila na trasie {origin} -> {destination}")
+        return results
+
+    def get_inspiration(
+        self,
+        origin: str,
+        max_price: Optional[int] = None,
+        currency: str = 'PLN',
+    ) -> list[dict]:
+        """Skanuje tanie loty z danego lotniska do WSZYSTKICH popularnych destynacji w JEDNYM zapytaniu!"""
+        # Data za 14 dni
+        start_dt = datetime.now() + timedelta(days=14)
+        date_from_str = start_dt.strftime("%d/%m/%Y")
+        
+        # Łączym destynacje po przecinku
+        destinations_str = ",".join(self.POPULAR_DESTINATIONS)
+        
+        logger.info(
+            f"Skanowanie tanich lotów Tequila z {origin} do {len(self.POPULAR_DESTINATIONS)} destynacji w JEDNYM zapytaniu!"
+        )
+        
+        params = {
+            'fly_from': origin,
+            'fly_to': destinations_str,
+            'date_from': date_from_str,
+            'curr': currency,
+            'adults': 1,
+            'one_for_city': 1,
+            'limit': 200
+        }
+        
+        data = self._make_request_with_retry("/search", **params)
+        results = []
+        if not data or not isinstance(data, dict):
+            return results
+            
+        flights_data = data.get('data', [])
+        logger.info(f"Odebrano {len(flights_data)} wyników z Tequila API")
+        
+        for item in flights_data:
+            dest_code = item.get('flyTo', '')
+            price = float(item.get('price', 0))
+            
+            if not dest_code or price <= 0:
+                continue
+                
+            if max_price and price > max_price:
+                continue
+                
+            local_dep = item.get('local_departure', '')
+            departure_date = local_dep[:10] if local_dep else ''
+            
+            airlines = [r.get('airline', '') for r in item.get('route', []) if r.get('airline')]
+            airline = airlines[0] if airlines else ''
+            
+            results.append({
+                'destination': dest_code,
+                'departure_date': departure_date,
+                'return_date': '',
+                'price': price,
+                'currency': currency,
+                'origin': origin,
+                'airline': airline,
+                'booking_link': item.get('deep_link', ''),
+            })
+            
+        if results:
+            cheapest = min(results, key=lambda x: x['price'])
+            logger.info(f"  Najtańszy lot z {origin}: {cheapest['destination']} za {cheapest['price']:.0f} {currency}")
+            
+        return results
+
+    def get_cheapest_dates(self, origin: str, destination: str) -> list[dict]:
+        """Puste — obsłużone w wyszukiwaniu."""
+        return []
+
+    @property
+    def request_count(self) -> int:
+        """Zwróć liczbę wykonanych zapytań API."""
+        return self._request_count
+

@@ -13,7 +13,7 @@ import requests
 from src.config import load_airports, DATA_DIR
 from src.price_analyzer import PriceAnalyzer
 from src.notifier import TelegramNotifier
-from src.api_client import RapidApiKiwiClient
+from src.api_client import RapidApiKiwiClient, TequilaKiwiClient
 
 logger = logging.getLogger(__name__)
 
@@ -38,9 +38,12 @@ class TelegramBot:
 
         self.airports: dict[str, dict] = {a["code"]: a for a in load_airports()}
 
-        self.api_client = RapidApiKiwiClient(
-            os.environ.get("RAPIDAPI_KEY", "")
-        )
+        tequila_key = os.environ.get("TEQUILA_API_KEY", "")
+        rapid_key = os.environ.get("RAPIDAPI_KEY", "")
+        if tequila_key:
+            self.api_client = TequilaKiwiClient(tequila_key)
+        else:
+            self.api_client = RapidApiKiwiClient(rapid_key)
 
         self.last_update_file: Path = DATA_DIR / "last_update_id.txt"
 

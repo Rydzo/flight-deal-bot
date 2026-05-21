@@ -30,7 +30,7 @@ from src.config import (
     get_destination_airports,
     CURRENCY,
 )
-from src.api_client import RapidApiKiwiClient
+from src.api_client import RapidApiKiwiClient, TequilaKiwiClient
 from src.price_analyzer import PriceAnalyzer
 from src.notifier import TelegramNotifier
 
@@ -52,8 +52,14 @@ def run_scan():
     logger.info("=" * 60)
 
     # --- Walidacja zmiennych środowiskowych ---
+    tequila_key = os.environ.get("TEQUILA_API_KEY")
+    rapid_key = os.environ.get("RAPIDAPI_KEY")
+    
+    if not tequila_key and not rapid_key:
+        logger.error("❌ Brak klucza API! Ustaw TEQUILA_API_KEY lub RAPIDAPI_KEY w pliku .env lub GitHub Secrets.")
+        sys.exit(1)
+        
     required_vars = [
-        "RAPIDAPI_KEY",
         "TELEGRAM_BOT_TOKEN",
         "TELEGRAM_CHAT_ID",
     ]
@@ -64,9 +70,10 @@ def run_scan():
         sys.exit(1)
 
     # --- Inicjalizacja komponentów ---
-    api_client = RapidApiKiwiClient(
-        api_key=os.environ["RAPIDAPI_KEY"]
-    )
+    if tequila_key:
+        api_client = TequilaKiwiClient(api_key=tequila_key)
+    else:
+        api_client = RapidApiKiwiClient(api_key=rapid_key)
 
     history_path = DATA_DIR / "price_history.json"
     analyzer = PriceAnalyzer(history_path)
