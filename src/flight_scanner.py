@@ -88,9 +88,14 @@ def run_scan():
     airports_dict = {a["code"]: a for a in all_airports}
     destination_codes = {a["code"] for a in get_destination_airports()}
 
-    # --- Wybierz dzisiejsze lotniska wylotowe (rotacja lub wszystkie) ---
+    # --- Wybierz dzisiejsze lotniska wylotowe (rotacja, wszystkie lub cały kraj) ---
+    scan_poland = os.environ.get("SCAN_POLAND_DIRECT", "true").lower() == "true"
     force_all = os.environ.get("FORCE_ALL_AIRPORTS", "false").lower() == "true"
-    if force_all:
+    
+    if scan_poland:
+        today_origins = ["PL"]
+        logger.info("📍 Tryb SCAN_POLAND_DIRECT — skanowanie z całego kraju (PL) jednocześnie!")
+    elif force_all:
         today_origins = list(POLISH_AIRPORTS)
         logger.info(f"📍 Tryb FORCE_ALL — skanowanie ze WSZYSTKICH lotnisk: {', '.join(today_origins)}")
     else:

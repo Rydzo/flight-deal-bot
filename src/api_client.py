@@ -93,12 +93,8 @@ class RapidApiKiwiClient:
             if price <= 0:
                 return None
 
-            # Destynacja i data
-            dest_code = ''
-            departure_date = ''
-            return_date = ''
-            airline = ''
-            booking_link = ''
+            # Rzeczywisty kod lotniska wylotowego
+            origin_code = ''
             
             # Format 1: outbound / inbound (nowszy format Kiwi RapidAPI)
             outbound = item.get('outbound')
@@ -110,6 +106,11 @@ class RapidApiKiwiClient:
                     
                     first_seg = segments[0]
                     departure_date = first_seg.get('source', {}).get('local_time', '')[:10]
+                    
+                    # Wyciągnij rzeczywiste lotnisko wylotowe
+                    source_station = first_seg.get('source', {})
+                    if isinstance(source_station, dict):
+                        origin_code = source_station.get('station', {}).get('code', '')
                     
                     carrier = first_seg.get('carrier', {})
                     if isinstance(carrier, dict):
@@ -128,6 +129,11 @@ class RapidApiKiwiClient:
                     first_sector = sectors[0]
                     arrival = first_sector.get('arrival', {})
                     departure = first_sector.get('departure', {})
+                    
+                    # Wyciągnij rzeczywiste lotnisko wylotowe
+                    dep_station = departure.get('station', {})
+                    if isinstance(dep_station, dict):
+                        origin_code = dep_station.get('code', '')
                     
                     # Kod destynacji
                     arr_city = arrival.get('city', {})
@@ -152,6 +158,12 @@ class RapidApiKiwiClient:
             
             if not dest_code:
                 return None
+                
+            # Wyciągnij origin z płaskiej struktury, jeśli nie ma segmentów
+            if not origin_code:
+                origin_code = item.get('origin', '') or item.get('flyFrom', '')
+            if not origin_code:
+                origin_code = origin
             
             # Booking link
             # W nowym formacie link może być w booking_options
@@ -163,7 +175,7 @@ class RapidApiKiwiClient:
                 booking_link = item.get('deep_link', '') or item.get('booking_link', '')
                 
             if not booking_link:
-                booking_link = self._generate_booking_link(origin, dest_code, departure_date)
+                booking_link = self._generate_booking_link(origin_code, dest_code, departure_date)
 
             return {
                 'destination': dest_code,
@@ -171,7 +183,7 @@ class RapidApiKiwiClient:
                 'return_date': return_date,
                 'price': price,
                 'currency': currency,
-                'origin': origin,
+                'origin': origin_code,
                 'airline': airline,
                 'booking_link': booking_link,
             }
