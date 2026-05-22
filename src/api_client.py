@@ -246,183 +246,21 @@ class RapidApiKiwiClient:
         max_price: Optional[int] = None,
         currency: str = 'PLN',
     ) -> list[dict]:
-        """Skanuje tanie loty z CAŁEJ POLSKI do CAŁEGO ŚWIATA w JEDNYM zapytaniu!
-        
-        Używa dedykowanego endpointu /deals/cheap-from-country/poland,
-        który natywnie zwraca najtańsze loty ze wszystkich polskich lotnisk
-        do wszystkich destynacji na świecie.
-        """
-        logger.info(
-            "🌍 Skanowanie COUNTRY DEALS — tanie loty z całej Polski do całego świata w JEDNYM zapytaniu!"
-        )
-        
-        # Endpoint country deals — slug 'poland'
-        data = self._make_request_with_retry(
-            "/deals/cheap-from-country/poland", max_retries=3
-        )
-        
-        results = []
-        if not data:
-            # Fallback: spróbuj search-oneway z WAW jako jedynym lotniskiem
-            logger.warning("Country deals nie zwróciło danych, próbuję fallback z WAW...")
-            return self._fallback_search_oneway(origin, max_price, currency)
-        
-        # Endpoint country deals może zwrócić dane w różnych formatach
-        # Format 1: lista okazji bezpośrednio
-        deals = []
-        if isinstance(data, list):
-            deals = data
-        elif isinstance(data, dict):
-            # Format 2: dane w kluczu 'deals', 'data', 'itineraries', 'flights'
-            deals = (
-                data.get('deals', []) or 
-                data.get('data', []) or 
-                data.get('itineraries', []) or 
-                data.get('flights', []) or
-                data.get('results', [])
-            )
-            # Jeśli deals to słownik z regionami — rozwiń
-            if isinstance(deals, dict):
-                all_deals = []
-                for region_deals in deals.values():
-                    if isinstance(region_deals, list):
-                        all_deals.extend(region_deals)
-                deals = all_deals
-        
-        logger.info(f"📊 Odebrano {len(deals)} okazji z country deals endpoint")
-        
-        for item in deals:
-            parsed = self._parse_deal(item, origin, currency)
-            if not parsed:
-                # Spróbuj parsować jako itinerary (stary format)
-                parsed = self._parse_itinerary(item, origin, currency)
-            if not parsed:
-                continue
-                
-            if max_price and parsed['price'] > max_price:
-                continue
-                
-            results.append(parsed)
-        
-        if results:
-            cheapest = min(results, key=lambda x: x['price'])
-            logger.info(
-                f"  ✈️ Najtańszy lot: {cheapest.get('origin', '?')}-{cheapest['destination']} "
-                f"za {cheapest['price']:.0f} {currency}"
-            )
-            logger.info(f"  📊 Łącznie {len(results)} unikalnych kierunków")
-        else:
-            logger.warning("⚠️ Country deals nie zwróciło żadnych parsowalnych wyników")
-            
-        return results
-    
-    def _parse_deal(self, item: dict, origin: str, currency: str) -> Optional[dict]:
-        """Parsuj pojedynczy element z odpowiedzi /deals/cheap-from-country."""
-        try:
-            if not isinstance(item, dict):
-                return None
-                
-            # Cena — może być w różnych formatach
-            price = 0
-            price_info = item.get('price', item.get('price_from', 0))
-            if isinstance(price_info, dict):
-                price = float(price_info.get('amount', 0) or price_info.get('value', 0))
-            else:
-                price = float(price_info) if price_info else 0
-            
-            if price <= 0:
-                return None
-            
-            # Destynacja
-            dest_code = (
-                item.get('flyTo', '') or 
-                item.get('destination', '') or 
-                item.get('to', {}).get('code', '') if isinstance(item.get('to'), dict) else item.get('to', '') or
-                ''
-            )
-            
-            # Fallback: zagnieżdżone obiekty city/station
-            if not dest_code:
-                dest_city = item.get('destination_city', item.get('city_to', {}))
-                if isinstance(dest_city, dict):
-                    dest_code = dest_city.get('code', '') or dest_city.get('id', '')
-            
-            if not dest_code or len(dest_code) < 2:
-                return None
-            
-            # Origin — rzeczywiste lotnisko wylotowe
-            origin_code = (
-                item.get('flyFrom', '') or 
-                item.get('origin', '') or
-                item.get('from', {}).get('code', '') if isinstance(item.get('from'), dict) else item.get('from', '') or
-                ''
-            )
-            if not origin_code:
-                origin_city = item.get('origin_city', item.get('city_from', {}))
-                if isinstance(origin_city, dict):
-                    origin_code = origin_city.get('code', '') or origin_city.get('id', '')
-            if not origin_code:
-                origin_code = origin  # fallback
-            
-            # Data wylotu
-            departure_date = (
-                item.get('local_departure', '')[:10] if item.get('local_departure') else
-                item.get('departure_date', '') or
-                item.get('dTime', '') or
-                item.get('date_from', '') or
-                ''
-            )
-            
-            # Linia lotnicza
-            airline = ''
-            airlines = item.get('airlines', [])
-            if airlines and isinstance(airlines, list):
-                airline = airlines[0] if isinstance(airlines[0], str) else airlines[0].get('name', '')
-            if not airline:
-                route = item.get('route', [])
-                if route and isinstance(route, list) and isinstance(route[0], dict):
-                    airline = route[0].get('airline', '')
-            
-            # Booking link
-            booking_link = (
-                item.get('deep_link', '') or 
-                item.get('booking_link', '') or
-                item.get('url', '') or
-                self._generate_booking_link(origin_code, dest_code, departure_date)
-            )
-            
-            return {
-                'destination': dest_code,
-                'departure_date': departure_date,
-                'return_date': item.get('return_date', '') or item.get('local_arrival', '')[:10] if item.get('local_arrival') else '',
-                'price': price,
-                'currency': currency,
-                'origin': origin_code,
-                'airline': airline,
-                'booking_link': booking_link,
-            }
-        except Exception as e:
-            logger.debug(f"Błąd parsowania deal: {e}")
-            return None
-    
-    def _fallback_search_oneway(
-        self, origin: str, max_price: Optional[int], currency: str
-    ) -> list[dict]:
-        """Fallback — skanowanie z WAW przez search-oneway jeśli country deals nie zadziała."""
-        # Użyj tylko WAW jako najbardziej prawdopodobnego lotniska
-        fallback_origin = 'WAW'
+        """Skanuje tanie loty z danego lotniska do DOWOLNEGO miejsca na świecie (anywhere) w JEDNYM zapytaniu!"""
         start_date = (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d')
         
-        logger.info(f"Fallback: skanowanie z {fallback_origin} do popularnych destynacji")
+        logger.info(
+            f"Zoptymalizowane skanowanie tanich lotów RapidAPI z {origin} do DOWOLNEGO MIEJSCA na świecie (anywhere) w JEDNYM zapytaniu!"
+        )
         
         params = {
-            'source': fallback_origin,
-            'destination': ','.join(self.POPULAR_DESTINATIONS[:20]),  # Top 20
+            'source': origin,
+            'destination': 'anywhere',
             'departure_date': start_date,
             'adults': 1,
             'currency': currency,
-            'one_for_city': 1,
-            'limit': 100
+            'one_for_city': 1,  # Zwróć najtańszą ofertę dla każdego miasta na świecie
+            'limit': 250        # Pobierz do 250 najtańszych kierunków
         }
         
         data = self._make_request_with_retry("/flights/search-oneway", max_retries=3, **params)
@@ -432,13 +270,21 @@ class RapidApiKiwiClient:
             return results
             
         itineraries = data.get('itineraries', [])
-        for item in itineraries:
-            parsed = self._parse_itinerary(item, fallback_origin, currency)
-            if parsed:
-                if max_price and parsed['price'] > max_price:
-                    continue
-                results.append(parsed)
+        logger.info(f"Odebrano {len(itineraries)} wyników z RapidAPI")
         
+        for item in itineraries:
+            parsed = self._parse_itinerary(item, origin, currency)
+            if not parsed:
+                continue
+                
+            if max_price and parsed['price'] > max_price:
+                continue
+                
+            results.append(parsed)
+            
+        if results:
+            cheapest = min(results, key=lambda x: x['price'])
+            logger.info(f"  Najtańszy lot z {origin}: {cheapest['destination']} za {cheapest['price']:.0f} {currency}")
         return results
 
     def get_cheapest_dates(self, origin: str, destination: str) -> list[dict]:

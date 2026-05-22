@@ -93,10 +93,10 @@ def run_scan():
     force_all = os.environ.get("FORCE_ALL_AIRPORTS", "false").lower() == "true"
     
     if scan_poland:
-        # Endpoint /deals/cheap-from-country/poland sam obsługuje cały kraj.
-        # 'PL' to tylko etykieta — api_client nie używa tego jako parametru.
-        today_origins = ["PL"]
-        logger.info("📍 Tryb SCAN_POLAND_DIRECT — endpoint country deals skanuje CAŁĄ Polskę automatycznie!")
+        # RapidAPI Kiwi nie obsługuje kodów krajów (np. 'PL') — używamy
+        # wszystkich polskich lotnisk połączonych przecinkiem w JEDNYM zapytaniu.
+        today_origins = [",".join(POLISH_AIRPORTS)]
+        logger.info(f"📍 Tryb SCAN_POLAND_DIRECT — skanowanie z {len(POLISH_AIRPORTS)} polskich lotnisk jednocześnie!")
     elif force_all:
         today_origins = list(POLISH_AIRPORTS)
         logger.info(f"📍 Tryb FORCE_ALL — skanowanie ze WSZYSTKICH lotnisk: {', '.join(today_origins)}")
