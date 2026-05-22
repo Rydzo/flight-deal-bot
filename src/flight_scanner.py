@@ -93,8 +93,10 @@ def run_scan():
     force_all = os.environ.get("FORCE_ALL_AIRPORTS", "false").lower() == "true"
     
     if scan_poland:
-        today_origins = ["PL"]
-        logger.info("📍 Tryb SCAN_POLAND_DIRECT — skanowanie z całego kraju (PL) jednocześnie!")
+        # RapidAPI Kiwi nie obsługuje kodów krajów (np. 'PL') — używamy
+        # wszystkich polskich lotnisk połączonych przecinkiem w JEDNYM zapytaniu.
+        today_origins = [",".join(POLISH_AIRPORTS)]
+        logger.info(f"📍 Tryb SCAN_POLAND_DIRECT — skanowanie z {len(POLISH_AIRPORTS)} polskich lotnisk jednocześnie!")
     elif force_all:
         today_origins = list(POLISH_AIRPORTS)
         logger.info(f"📍 Tryb FORCE_ALL — skanowanie ze WSZYSTKICH lotnisk: {', '.join(today_origins)}")
@@ -130,12 +132,16 @@ def run_scan():
 
                 total_flights_checked += 1
 
+                # Rzeczywiste lotnisko wylotowe (np. WAW) — wyciągnięte
+                # z danych lotu przez api_client, nawet gdy origin to lista
+                actual_origin = flight.get("origin", origin)
+
                 # Pobierz informacje o lotnisku docelowym (soft lookup)
                 airport_info = airports_dict.get(dest_code, {})
                 country = airport_info.get("country", "Unknown")
                 airport_name = airport_info.get("name", dest_code)
 
-                route_key = f"{origin}-{dest_code}"
+                route_key = f"{actual_origin}-{dest_code}"
 
                 # Sprawdź czy lot jest zbugowany
                 is_bugged, reason, avg_price = analyzer.is_bugged_flight(
@@ -157,7 +163,7 @@ def run_scan():
 
                     deal = {
                         "route": route_key,
-                        "origin": origin,
+                        "origin": actual_origin,
                         "destination": dest_code,
                         "destination_name": airport_name,
                         "country": country,

@@ -246,26 +246,21 @@ class RapidApiKiwiClient:
         max_price: Optional[int] = None,
         currency: str = 'PLN',
     ) -> list[dict]:
-        """Skanuje tanie loty z danego lotniska do WSZYSTKICH popularnych destynacji w JEDNYM zapytaniu!
-        
-        Łączy wszystkie popularne destynacje po przecinku, co drastycznie
-        zmniejsza liczbę zapytań API (z 58 do 1 zapytania na skan).
-        """
+        """Skanuje tanie loty z danego lotniska do DOWOLNEGO miejsca na świecie (anywhere) w JEDNYM zapytaniu!"""
         start_date = (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d')
-        destinations_str = ",".join(self.POPULAR_DESTINATIONS)
         
         logger.info(
-            f"Zoptymalizowane skanowanie tanich lotów RapidAPI z {origin} do {len(self.POPULAR_DESTINATIONS)} destynacji w JEDNYM zapytaniu!"
+            f"Zoptymalizowane skanowanie tanich lotów RapidAPI z {origin} do DOWOLNEGO MIEJSCA na świecie (anywhere) w JEDNYM zapytaniu!"
         )
         
         params = {
             'source': origin,
-            'destination': destinations_str,
+            'destination': 'anywhere',
             'departure_date': start_date,
             'adults': 1,
             'currency': currency,
-            'one_for_city': 1,  # Zwróć najtańszą ofertę dla każdego miasta
-            'limit': 150
+            'one_for_city': 1,  # Zwróć najtańszą ofertę dla każdego miasta na świecie
+            'limit': 250        # Pobierz do 250 najtańszych kierunków
         }
         
         data = self._make_request_with_retry("/flights/search-oneway", max_retries=3, **params)
@@ -432,26 +427,23 @@ class TequilaKiwiClient:
         max_price: Optional[int] = None,
         currency: str = 'PLN',
     ) -> list[dict]:
-        """Skanuje tanie loty z danego lotniska do WSZYSTKICH popularnych destynacji w JEDNYM zapytaniu!"""
+        """Skanuje tanie loty Tequila z danego lotniska do DOWOLNEGO miejsca na świecie (anywhere) w JEDNYM zapytaniu!"""
         # Data za 14 dni
         start_dt = datetime.now() + timedelta(days=14)
         date_from_str = start_dt.strftime("%d/%m/%Y")
         
-        # Łączym destynacje po przecinku
-        destinations_str = ",".join(self.POPULAR_DESTINATIONS)
-        
         logger.info(
-            f"Skanowanie tanich lotów Tequila z {origin} do {len(self.POPULAR_DESTINATIONS)} destynacji w JEDNYM zapytaniu!"
+            f"Skanowanie tanich lotów Tequila z {origin} do DOWOLNEGO MIEJSCA na świecie (anywhere) w JEDNYM zapytaniu!"
         )
         
         params = {
             'fly_from': origin,
-            'fly_to': destinations_str,
+            'fly_to': 'anywhere',
             'date_from': date_from_str,
             'curr': currency,
             'adults': 1,
             'one_for_city': 1,
-            'limit': 200
+            'limit': 250
         }
         
         data = self._make_request_with_retry("/search", **params)
