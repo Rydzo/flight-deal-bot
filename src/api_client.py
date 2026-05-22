@@ -10,14 +10,19 @@ logger = logging.getLogger(__name__)
 class RapidApiKiwiClient:
     """Klient API Kiwi.com przez RapidAPI do wyszukiwania lotów."""
 
-    # Zoptymalizowana lista 30 najpopularniejszych kierunków turystycznych i city-break (pod darmowy limit API)
+    # Popularne destynacje europejskie do skanowania (kody IATA)
     POPULAR_DESTINATIONS = [
-        # Główne kierunki lotnicze i City Break
-        'LON', 'BCN', 'PAR', 'ROM', 'MIL', 'AMS', 'BER', 'VIE', 'PRG', 'BUD',
-        'LIS', 'MAD', 'DUB', 'CPH', 'ATH', 'IST',
-        # Najpopularniejsze kurorty wakacyjne i wyspy
+        # Europa Zachodnia
+        'LON', 'BCN', 'PAR', 'ROM', 'MIL', 'AMS', 'BER', 'BRU', 'VIE', 'PRG',
+        'BUD', 'LIS', 'MAD', 'DUB', 'CPH', 'ATH', 'ZRH', 'OSL', 'HEL', 'STO',
+        # Europa Wschodnia / Bałkany
+        'IST', 'SOF', 'BUH', 'ZAG', 'BEG', 'TIV', 'SKP',
+        # Popularne turystyczne
         'PMI', 'AGP', 'TFS', 'LPA', 'FAO', 'NAP', 'SPU', 'DBV', 'CFU', 'RHO',
-        'HER', 'MLA', 'LCA', 'TIV'
+        'HER', 'SKG', 'GVA', 'NCE', 'MRS',
+        # Daleki zasięg
+        'JFK', 'BKK', 'NRT', 'DXB', 'DOH', 'TLV', 'CMB', 'DEL', 'SIN',
+        'KUL', 'HKT', 'BAH', 'CAI', 'CAS', 'RAK', 'SSH',
     ]
 
     def __init__(self, api_key: str) -> None:
