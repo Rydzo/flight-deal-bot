@@ -249,13 +249,25 @@ class RapidApiKiwiClient:
         """Skanuje tanie loty z danego lotniska do DOWOLNEGO miejsca na świecie (anywhere) w JEDNYM zapytaniu!"""
         start_date = (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d')
         
+        # RapidAPI Kiwi nie obsługuje 'anywhere' – pobieramy wszystkie kierunki z bazy z fallbackiem
+        try:
+            from src.config import get_destination_airports
+            destinations = [a['code'] for a in get_destination_airports()]
+            if not destinations:
+                destinations = self.POPULAR_DESTINATIONS
+        except Exception as e:
+            logger.warning(f"Nie udało się załadować lotnisk docelowych z config, używam POPULAR_DESTINATIONS: {e}")
+            destinations = self.POPULAR_DESTINATIONS
+
+        destination_str = ",".join(destinations)
+        
         logger.info(
-            f"Zoptymalizowane skanowanie tanich lotów RapidAPI z {origin} do DOWOLNEGO MIEJSCA na świecie (anywhere) w JEDNYM zapytaniu!"
+            f"Zoptymalizowane skanowanie tanich lotów RapidAPI z {origin} do {len(destinations)} destynacji w JEDNYM zapytaniu!"
         )
         
         params = {
             'source': origin,
-            'destination': 'anywhere',
+            'destination': destination_str,
             'departure_date': start_date,
             'adults': 1,
             'currency': currency,
