@@ -234,72 +234,50 @@ class RapidApiKiwiClient:
         max_price: Optional[int] = None,
         currency: str = 'PLN',
     ) -> list[dict]:
-        """Najtańsze destynacje z danego lotniska.
+        """Skanuje tanie loty z danego lotniska do WSZYSTKICH popularnych destynacji w JEDNYM zapytaniu!
         
-        Używa search-oneway do popularnych destynacji, bo endpoint
-        price-map w Kiwi RapidAPI nie zwraca wyników dla polskich lotnisk.
+        Łączy wszystkie popularne destynacje po przecinku, co drastycznie
+        zmniejsza liczbę zapytań API (z 58 do 1 zapytania na skan).
         """
         start_date = (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d')
+        destinations_str = ",".join(self.POPULAR_DESTINATIONS)
         
         logger.info(
-            f"Skanowanie tanich lotów z {origin}, "
-            f"max cena: {max_price} {currency}, "
-            f"destynacji do sprawdzenia: {len(self.POPULAR_DESTINATIONS)}"
+            f"Zoptymalizowane skanowanie tanich lotów RapidAPI z {origin} do {len(self.POPULAR_DESTINATIONS)} destynacji w JEDNYM zapytaniu!"
         )
         
+        params = {
+            'source': origin,
+            'destination': destinations_str,
+            'departure_date': start_date,
+            'adults': 1,
+            'currency': currency,
+            'one_for_city': 1,  # Zwróć najtańszą ofertę dla każdego miasta
+            'limit': 150
+        }
+        
+        data = self._make_request_with_retry("/flights/search-oneway", max_retries=3, **params)
+        
         results = []
+        if not data or not isinstance(data, dict):
+            return results
+            
+        itineraries = data.get('itineraries', [])
+        logger.info(f"Odebrano {len(itineraries)} wyników z RapidAPI")
         
-        for dest in self.POPULAR_DESTINATIONS:
-            try:
-                params = {
-                    'source': origin,
-                    'destination': dest,
-                    'departure_date': start_date,
-                    'adults': 1,
-                    'currency': currency,
-                    'limit': 3  # Tylko najtańsze 3 oferty na trasę
-                }
-                
-                data = self._make_request_with_retry(
-                    "/flights/search-oneway", max_retries=3, **params
-                )
-                
-                if not data or not isinstance(data, dict):
-                    time.sleep(1.0)
-                    continue
-                
-                itineraries = data.get('itineraries', [])
-                
-                for item in itineraries:
-                    parsed = self._parse_itinerary(item, origin, currency)
-                    if not parsed:
-                        continue
-                    
-                    # Nadpisz destynację (mamy pewność)
-                    parsed['destination'] = dest
-                    
-                    if max_price and parsed['price'] > max_price:
-                        continue
-                    
-                    results.append(parsed)
-                
-                if itineraries:
-                    cheapest = min(
-                        (float(it.get('price', {}).get('amount', 99999)) 
-                         if isinstance(it.get('price'), dict) 
-                         else 99999 for it in itineraries),
-                        default=99999
-                    )
-                    logger.info(f"  {origin} -> {dest}: {len(itineraries)} lotów, najtańszy {cheapest:.0f} PLN")
-                
-                # Stała pauza między zapytaniami, aby szanować rate limit darmowego planu RapidAPI
-                time.sleep(1.2)
-                    
-            except Exception as e:
-                logger.warning(f"Błąd skanowania {origin} -> {dest}: {e}")
+        for item in itineraries:
+            parsed = self._parse_itinerary(item, origin, currency)
+            if not parsed:
                 continue
-        
-        logger.info(f"Znaleziono łącznie {len(results)} ofert z {origin}")
+                
+            if max_price and parsed['price'] > max_price:
+                continue
+                
+            results.append(parsed)
+            
+        if results:
+            cheapest = min(results, key=lambda x: x['price'])
+            logger.info(f"  Najtańszy lot z {origin}: {cheapest['destination']} za {cheapest['price']:.0f} {currency}")
         return results
 
     def get_cheapest_dates(self, origin: str, destination: str) -> list[dict]:
