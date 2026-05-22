@@ -2,8 +2,8 @@ name: "✈️ Scan Flights"
 
 on:
   schedule:
-    # Uruchamiaj co 6 godzin (UTC): 00:00, 06:00, 12:00, 18:00
-    - cron: '0 */6 * * *'
+    # Uruchamiaj co 8 godzin (3x dziennie) — 90 req/miesiąc z limitu 300
+    - cron: '0 */8 * * *'
   workflow_dispatch:
     # Pozwól na ręczne uruchomienie z GitHub UI
     inputs:
